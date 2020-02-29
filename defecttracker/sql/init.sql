@@ -166,10 +166,6 @@ CREATE TABLE IF NOT EXISTS t_content_right
     CONSTRAINT t_content_right_fk2 FOREIGN KEY (group_id) REFERENCES t_group (id) ON DELETE CASCADE
 );
 
---- set pwd 'pass' dependent on salt qczm7vjTmdY=
--- root user
-update t_user set pwd='lj31EhPC1JvEvw0/+DghmE/1xzc=' where id=1;
-
 -- root user
 INSERT INTO t_user (id,first_name,last_name,email,login,pwd,approval_code,approved)
 VALUES (1,'System','Administrator','root@localhost','root','','',TRUE);
@@ -271,6 +267,7 @@ INSERT INTO t_system_right (name,group_id)
 VALUES ('CONTENTEDIT',1);
 INSERT INTO t_system_right (name,group_id)
 VALUES ('CONTENTREAD',1);
+
 
 --- set pwd 'pass' dependent on salt qczm7vjTmdY=
 -- root user
