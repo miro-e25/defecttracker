@@ -1,0 +1,12 @@
+/out
+/.idea/dataSources
+/.idea/dictionaries
+/.idea/dataSources.local.xml
+/.idea/dataSources.xml
+/.idea/misc.xml
+/.idea/workspace.xml
+/.sass-cache
+*.scssc
+.idea/$CACHE_FILE$
+.idea/inspectionProfiles/Project_Default.xml
+.idea/artifacts/defecttracker.xml

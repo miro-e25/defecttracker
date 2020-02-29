@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/bandika-apibase/bandika-apibase.iml" filepath="$PROJECT_DIR$/bandika-apibase/bandika-apibase.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bandika-base/bandika-base.iml" filepath="$PROJECT_DIR$/bandika-base/bandika-base.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bandika-docexport/bandika-docexport.iml" filepath="$PROJECT_DIR$/bandika-docexport/bandika-docexport.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bandika-webbase/bandika-webbase.iml" filepath="$PROJECT_DIR$/bandika-webbase/bandika-webbase.iml" />
+      <module fileurl="file://$PROJECT_DIR$/defecttracker/defecttracker.iml" filepath="$PROJECT_DIR$/defecttracker/defecttracker.iml" />
+    </modules>
+  </component>
+</project>
