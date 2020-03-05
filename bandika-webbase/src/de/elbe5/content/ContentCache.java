@@ -27,7 +27,7 @@ public class ContentCache {
     private static List<ContentData> footerList = new ArrayList<>();
 
     public static synchronized void load() {
-        List<ContentData> contentList = ContentBean.getInstance().getAllContents(true);
+        List<ContentData> contentList = ContentBean.getInstance().getAllContents();
         List<FileData> fileList = FileBean.getInstance().getAllFiles();
         Map<Integer, ContentData> contents = new HashMap<>();
         Map<String, ContentData> paths = new HashMap<>();

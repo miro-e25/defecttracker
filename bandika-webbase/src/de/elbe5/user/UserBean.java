@@ -298,8 +298,8 @@ public class UserBean extends DbBean {
                     data.setId(rs.getInt(i++));
                     data.setChangeDate(rs.getTimestamp(i++).toLocalDateTime());
                     data.setLogin(login);
-                    String encypted = rs.getString(i++);
-                    passed = (UserSecurity.encryptPassword(pwd, Configuration.getSalt()).equals(encypted));
+                    String encrypted = rs.getString(i++);
+                    passed = (UserSecurity.encryptPassword(pwd, Configuration.getSalt()).equals(encrypted));
                     data.setPassword("");
                     data.setFirstName(rs.getString(i++));
                     data.setLastName(rs.getString(i++));
