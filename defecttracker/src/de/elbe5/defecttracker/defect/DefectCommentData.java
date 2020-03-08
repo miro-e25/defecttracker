@@ -104,7 +104,7 @@ public class DefectCommentData extends BaseData {
     public void readApiRequestData(RequestData rdata) {
         setCreatorId(rdata.getInt("creatorId"));
         setState(rdata.getString("state"));
-        setCreationDate(DateUtil.asLocalDateTime(rdata.getInt("creationDate")));
+        setCreationDate(DateUtil.asLocalDateTime(rdata.getLong("creationDate")));
         setComment(rdata.getString("comment"));
     }
 

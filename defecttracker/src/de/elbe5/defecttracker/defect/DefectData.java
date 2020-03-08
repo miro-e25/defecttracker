@@ -401,8 +401,8 @@ public class DefectData extends ContentData {
         setPositionY(rdata.getInt("positionY"));
         setPositionComment(rdata.getString("positionComment"));
         setState(rdata.getString("state"));
-        setCreationDate(DateUtil.asLocalDateTime(rdata.getInt("creationDate")));
-        setDueDate1(DateUtil.asLocalDate(rdata.getInt("dueDate")));
+        setCreationDate(DateUtil.asLocalDateTime(rdata.getLong("creationDate")));
+        setDueDate1(DateUtil.asLocalDate(rdata.getLong("dueDate")));
         setLocationId(rdata.getInt("locationId"));
     }
 

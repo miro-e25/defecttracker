@@ -9,6 +9,7 @@
 package de.elbe5.defecttracker.defect;
 
 import de.elbe5.base.data.BinaryFile;
+import de.elbe5.base.log.Log;
 import de.elbe5.content.ContentBean;
 import de.elbe5.content.ContentCache;
 import de.elbe5.content.ContentData;
@@ -59,6 +60,7 @@ public class DefectApiController extends BaseApiController {
         DefectData data = new DefectData();
         data.setCreateValues(location, rdata);
         data.readApiRequestData(rdata);
+        //Log.log(data.getJson(rdata.getLocale()).toJSONString());
         if (!ContentBean.getInstance().saveContent(data)) {
             return new ApiResponseCodeView(ResponseCode.BAD_REQUEST);
         }
