@@ -26,9 +26,5 @@
     <orderEntry type="library" name="docconvert" level="project" />
     <orderEntry type="library" name="jsoup" level="project" />
     <orderEntry type="library" name="json" level="project" />
-    <orderEntry type="module" module-name="bandika-base" />
-    <orderEntry type="module" module-name="bandika-webbase" />
-    <orderEntry type="module" module-name="bandika-apibase" />
-    <orderEntry type="module" module-name="bandika-docexport" />
   </component>
 </module>

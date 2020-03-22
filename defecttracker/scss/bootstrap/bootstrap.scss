@@ -8,7 +8,7 @@
 // Configuration
 
 @import "functions";
-@import "bandika/extras";
+@import "../bandika/extras";
 @import "variables";
 @import "mixins";
 @import "utilities";
@@ -53,7 +53,3 @@
 // Utilities
 
 @import "utilities/api";
-
-@import "bandika/font-awesome";
-@import "bandika/datepicker3";
-@import "bandika/webbase";

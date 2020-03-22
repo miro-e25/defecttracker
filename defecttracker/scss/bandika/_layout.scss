@@ -1,8 +1,7 @@
-@import "variables";
-@import "../../../bandika-webbase/scss/bandika/extras";
-@import "../../../bandika-webbase/scss/functions";
-@import "../../../bandika-webbase/scss/variables";
-@import "../../../bandika-webbase/scss/mixins";
+@import "extras";
+@import "../bootstrap/functions";
+@import "../bootstrap/variables";
+@import "../bootstrap/mixins";
 
 body {
   background: $background-body;
