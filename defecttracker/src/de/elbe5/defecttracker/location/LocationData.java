@@ -150,6 +150,7 @@ public class LocationData extends ContentData {
         setName(StringUtil.toSafeWebName(getDisplayName()));
         setDescription(rdata.getString("description"));
         setNavType(ContentData.NAV_TYPE_HEADER);
+        setActive(rdata.getBoolean("active"));
         BinaryFile file = rdata.getFile("file");
         if (file != null){
             plan = new PlanImageData();
@@ -168,6 +169,7 @@ public class LocationData extends ContentData {
         setName(StringUtil.toSafeWebName(getDisplayName()));
         setDescription(rdata.getString("description"));
         setNavType(ContentData.NAV_TYPE_HEADER);
+        setActive(rdata.getBoolean("active"));
         if (getDisplayName().isEmpty()) {
             rdata.addIncompleteField("displayName");
         }

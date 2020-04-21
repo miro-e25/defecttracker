@@ -11,6 +11,8 @@ import de.elbe5.view.IApiView;
 import de.elbe5.view.JsonView;
 import org.json.simple.JSONObject;
 
+import java.time.LocalDateTime;
+
 public class UserApiController extends ApiController {
 
     public static final String KEY = "user";
@@ -49,8 +51,15 @@ public class UserApiController extends ApiController {
             Log.info("bad login of "+login);
             return new ApiResponseCodeView(ResponseCode.UNAUTHORIZED);
         }
+
+        String duration=rdata.getString("duration");
+        LocalDateTime expiration = getExpiration(duration);
         if (data.getToken().isEmpty()){
-            if (!UserBean.getInstance().setToken(data))
+            if (!UserBean.getInstance().setToken(data, expiration))
+                return new ApiResponseCodeView(ResponseCode.UNAUTHORIZED);
+        }
+        else {
+            if (!UserBean.getInstance().updateToken(data, expiration))
                 return new ApiResponseCodeView(ResponseCode.UNAUTHORIZED);
         }
         JSONObject json = new JSONObject();
@@ -59,6 +68,7 @@ public class UserApiController extends ApiController {
         json.put("name", data.getName());
         json.put("token", data.getToken());
         json.put("expiration", DateUtil.asMillis(data.getTokenExpiration()));
+        Log.log(json.toJSONString());
         return new JsonView(json.toJSONString());
     }
 
@@ -68,6 +78,24 @@ public class UserApiController extends ApiController {
         if (data==null)
             return new ApiResponseCodeView(ResponseCode.UNAUTHORIZED);
         return new ApiResponseCodeView(ResponseCode.OK);
+    }
+
+    private LocalDateTime getExpiration(String duration){
+        LocalDateTime now = UserBean.getInstance().getServerTime();
+        switch (duration){
+            case "hour":
+                return now.plusHours(1);
+            case "day":
+                return now.plusDays(1);
+            case "week":
+                return now.plusWeeks(1);
+            case "month":
+                return now.plusMonths(1);
+            case "year":
+                return now.plusYears(1);
+            default:
+                return LocalDateTime.of(now.getYear(),now.getMonth(),now.getDayOfMonth(),0,0).plusDays(1);
+        }
     }
 
 }

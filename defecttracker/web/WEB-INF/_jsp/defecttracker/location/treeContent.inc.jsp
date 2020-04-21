@@ -11,6 +11,7 @@
 <%@ page import="de.elbe5.request.SessionRequestData" %>
 <%@ page import="java.util.Locale" %>
 <%@ page import="de.elbe5.content.ContentData" %>
+<%@ page import="de.elbe5.application.Configuration" %>
 <%@ taglib uri="/WEB-INF/formtags.tld" prefix="form" %>
 <%
     SessionRequestData rdata = SessionRequestData.getRequestData(request);
@@ -18,6 +19,7 @@
     ContentData contentData = rdata.getCurrentContent();
     assert contentData != null;
 %>
+<% if (contentData.isActive() || Configuration.isShowInactiveContent()){%>
 <li>
     <span class="<%=contentData.hasUnpublishedDraft() ? "unpublished" : "published"%>">
         <%=$H(contentData.getDisplayName())%>
@@ -26,10 +28,12 @@
     <div class="icons">
         <a class="icon fa fa-eye" href="" onclick="return linkTo('/ctrl/content/show/<%=contentData.getId()%>');" title="<%=$SH("_view",locale)%>"> </a>
         <a class="icon fa fa-pencil" href="" onclick="return openModalDialog('/ctrl/content/openEditContentData/<%=contentData.getId()%>');" title="<%=$SH("_edit",locale)%>"> </a>
+        <a class="icon fa fa-trash-o" href="" onclick="if (confirmDelete()) return linkTo('/ctrl/content/deleteContent/<%=contentData.getId()%>');" title="<%=$SH("_delete",locale)%>"> </a>
     </div>
     <%}%>
     <ul>
         <jsp:include page="/WEB-INF/_jsp/defecttracker/location/treeContentImages.inc.jsp" flush="true" />
     </ul>
 </li>
+<%}%>
 

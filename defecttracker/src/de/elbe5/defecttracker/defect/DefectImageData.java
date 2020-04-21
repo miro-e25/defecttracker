@@ -17,13 +17,4 @@ public class DefectImageData extends ImageData {
         setMaxWidth(MAX_IMAGE_WIDTH);
     }
 
-    @SuppressWarnings("unchecked")
-    public JSONObject getJson(Locale locale){
-        JSONObject json = new JSONObject();
-        json.put("id",getId());
-        json.put("fileName",getFileName());
-        json.put("contentType",getContentType());
-        json.put("displayName",getDisplayName());
-        return json;
-    }
 }

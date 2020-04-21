@@ -52,12 +52,12 @@ public class AdminController extends Controller {
     }
 
     public IView openAdministration(SessionRequestData rdata){
+        if (rdata.hasSystemRight(SystemZone.CONTENTEDIT))
+            return openContentAdministration(rdata);
         if (rdata.hasSystemRight(SystemZone.APPLICATION))
             return openSystemAdministration(rdata);
         if (rdata.hasSystemRight(SystemZone.USER))
             return openPersonAdministration(rdata);
-        if (rdata.hasSystemRight(SystemZone.CONTENTEDIT))
-            return openContentAdministration(rdata);
         throw new CmsAuthorizationException();
     }
 
@@ -126,6 +126,12 @@ public class AdminController extends Controller {
         BinaryFileCache.setDirty();
         rdata.setMessage(Strings.string("_cacheCleared",rdata.getLocale()), SessionRequestData.MESSAGE_TYPE_SUCCESS);
         return openSystemAdministration(rdata);
+    }
+
+    public IView toggleInactiveContent(SessionRequestData rdata) {
+        checkRights(rdata.hasSystemRight(SystemZone.CONTENTEDIT));
+        Configuration.setShowInactiveContent(!Configuration.isShowInactiveContent());
+        return openContentAdministration(rdata);
     }
 
     protected IView showExecuteDatabaseScript() {

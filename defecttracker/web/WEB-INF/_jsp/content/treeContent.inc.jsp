@@ -13,6 +13,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="de.elbe5.content.ContentData" %>
 <%@ page import="de.elbe5.request.RequestData" %>
+<%@ page import="de.elbe5.application.Configuration" %>
 <%@ taglib uri="/WEB-INF/formtags.tld" prefix="form" %>
 <%
     SessionRequestData rdata = SessionRequestData.getRequestData(request);
@@ -21,6 +22,7 @@
     assert contentData != null;
     List<String> childTypes=contentData.getChildClasses();
 %>
+<% if (contentData.isActive() || Configuration.isShowInactiveContent()){%>
 <li class="open">
     <span class="<%=contentData.hasUnpublishedDraft() ? "unpublished" : "published"%>">
         <%=$H(contentData.getDisplayName())%>
@@ -64,4 +66,4 @@
         }%>
     </ul>
 </li>
-
+<%}%>

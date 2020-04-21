@@ -125,6 +125,7 @@ public class ProjectData extends ContentData {
         setDescription(rdata.getString("description"));
         setGroupId(rdata.getInt("groupId"));
         setPhase(rdata.getString("phase"));
+        setActive(rdata.getBoolean("active"));
         setNavType(ContentData.NAV_TYPE_HEADER);
         if (getDisplayName().isEmpty()) {
             rdata.addIncompleteField("displayName");

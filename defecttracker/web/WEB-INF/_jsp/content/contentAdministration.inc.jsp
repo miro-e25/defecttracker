@@ -12,14 +12,17 @@
 <%@ page import="de.elbe5.content.ContentCache" %>
 <%@ page import="de.elbe5.request.SessionRequestData" %>
 <%@ page import="de.elbe5.content.ContentData" %>
+<%@ page import="de.elbe5.application.Configuration" %>
 <%@ taglib uri="/WEB-INF/formtags.tld" prefix="form" %>
 <%
     SessionRequestData rdata = SessionRequestData.getRequestData(request);
+    Locale locale = rdata.getLocale();
     ContentData rootContent = ContentCache.getContentRoot();
     assert(rootContent!=null);
 %>
             <section class="treeSection">
                 <% if (rdata.hasAnyContentRight()) { %>
+                <div><input type="checkbox" <%=Configuration.isShowInactiveContent() ? "checked" : ""%> onchange="linkTo('/ctrl/admin/toggleInactiveContent');" />&nbsp;<%=$SH("_showInactiveContent", locale)%></div>
                 <ul class="tree pagetree">
                     <% rootContent.displayTreeContent(pageContext,rdata);%>
                 </ul>

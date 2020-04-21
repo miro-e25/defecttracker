@@ -47,6 +47,9 @@
                 <% if (contentData.isNew()){%>
                 <form:file name="file" label="_plan" />
                 <%}%>
+                <form:line label="_active" padded="true">
+                    <form:check name="active" value="true" checked="<%=contentData.isActive()%>"/>
+                </form:line>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-dismiss="modal"><%=$SH("_close",locale)%>

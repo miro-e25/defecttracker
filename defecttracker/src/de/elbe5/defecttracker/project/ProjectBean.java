@@ -28,7 +28,7 @@ public class ProjectBean extends ContentBean {
         }
         return instance;
     }
-    private static String GET_CONTENT_EXTRAS_SQL = "SELECT group_id,phase FROM t_project WHERE id=?";
+    private static final String GET_CONTENT_EXTRAS_SQL = "SELECT group_id,phase FROM t_project WHERE id=?";
 
     @Override
     public void readContentExtras(Connection con, ContentData contentData) throws SQLException {
@@ -50,7 +50,7 @@ public class ProjectBean extends ContentBean {
         }
     }
 
-    private static String INSERT_CONTENT_EXTRAS_SQL = "insert into t_project (group_id, phase, id) values(?,?,?)";
+    private static final String INSERT_CONTENT_EXTRAS_SQL = "insert into t_project (group_id, phase, id) values(?,?,?)";
 
     @Override
     public void createContentExtras(Connection con, ContentData contentData) throws SQLException {
@@ -71,7 +71,7 @@ public class ProjectBean extends ContentBean {
         }
     }
 
-    private static String UPDATE_CONTENT_EXTRAS_SQL = "update t_project set group_id=? where id=?";
+    private static final String UPDATE_CONTENT_EXTRAS_SQL = "update t_project set group_id=? where id=?";
 
     @Override
     public void updateContentExtras(Connection con, ContentData contentData) throws SQLException {
@@ -91,8 +91,8 @@ public class ProjectBean extends ContentBean {
         }
     }
 
-    private static String GET_ALL_PROJECTIDS_SQL = "SELECT id FROM t_project";
-    private static String GET_USER_PROJECTIDS_SQL = "SELECT distinct t1.id FROM t_project t1, t_user2group t2 WHERE t1.group_id=t2.group_id and t2.user_id=?";
+    private static final String GET_ALL_PROJECTIDS_SQL = "SELECT t1.id FROM t_project t1, t_content t2 where t1.id=t2.id and t2.active=true";
+    private static final String GET_USER_PROJECTIDS_SQL = "SELECT distinct t1.id FROM t_project t1, t_user2group t2, t_content t3 WHERE t1.group_id=t2.group_id and t1.id=t3.id and t2.user_id=? and t3.active=true";
 
     public List<Integer> getUserProjectIds(int userId, boolean isEditor) {
         List<Integer> projectIds = new ArrayList<>();

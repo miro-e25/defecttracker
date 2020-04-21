@@ -176,6 +176,8 @@ public class UserBean extends DbBean {
 
     private static String SET_TOKEN_SQL = "UPDATE t_user SET token=?,token_expiration=? WHERE id=?";
 
+    private static String UPDATE_TOKEN_SQL = "UPDATE t_user SET token_expiration=? WHERE id=?";
+
     public UserData loginApiUser(String login, String pwd) {
         Connection con = getConnection();
         PreparedStatement pst = null;
@@ -220,16 +222,14 @@ public class UserBean extends DbBean {
         return data;
     }
 
-    public boolean setToken(UserData data){
+    public boolean setToken(UserData data, LocalDateTime expiration){
         Connection con = startTransaction();
-        PreparedStatement pst = null;
+        PreparedStatement pst;
         try {
             if (changedUser(con, data)) {
                 return rollbackTransaction(con);
             }
             String token=UUID.randomUUID().toString();
-            LocalDateTime now = getServerTime();
-            LocalDateTime expiration=LocalDateTime.of(now.getYear(),now.getMonth(),now.getDayOfMonth(),0,0).plusDays(1);
             pst = con.prepareStatement(SET_TOKEN_SQL);
             pst.setString(1, token);
             pst.setTimestamp(2, Timestamp.valueOf(expiration));
@@ -237,6 +237,25 @@ public class UserBean extends DbBean {
             pst.executeUpdate();
             pst.close();
             data.setToken(token);
+            data.setTokenExpiration(expiration);
+            return commitTransaction(con);
+        } catch (Exception se) {
+            return rollbackTransaction(con, se);
+        }
+    }
+
+    public boolean updateToken(UserData data, LocalDateTime expiration){
+        Connection con = startTransaction();
+        PreparedStatement pst;
+        try {
+            if (changedUser(con, data)) {
+                return rollbackTransaction(con);
+            }
+            pst = con.prepareStatement(UPDATE_TOKEN_SQL);
+            pst.setTimestamp(1, Timestamp.valueOf(expiration));
+            pst.setInt(2, data.getId());
+            pst.executeUpdate();
+            pst.close();
             data.setTokenExpiration(expiration);
             return commitTransaction(con);
         } catch (Exception se) {

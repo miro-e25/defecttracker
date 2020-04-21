@@ -9,6 +9,7 @@
 package de.elbe5.defecttracker.project;
 
 import de.elbe5.application.Configuration;
+import de.elbe5.base.log.Log;
 import de.elbe5.content.ContentCache;
 import de.elbe5.defecttracker.BaseApiController;
 import de.elbe5.defecttracker.ViewFilter;
@@ -62,6 +63,7 @@ public class ProjectApiController extends BaseApiController {
         if (user==null)
             return new ApiResponseCodeView(ResponseCode.UNAUTHORIZED);
         JSONObject json = getProjectsJson(user);
+        //Log.log(json.toJSONString());
         return new JsonView(json.toJSONString());
     }
 

@@ -19,7 +19,9 @@ public class ApiRequestData extends RequestData {
 
     public ApiRequestData(String method, HttpServletRequest request) {
         super(method, request);
-        token = request.getHeader("token");
+        token = request.getHeader("Authentication");
+        if (token==null || token.isEmpty())
+            token = request.getHeader("token");
         if (token==null)
             token="";
     }

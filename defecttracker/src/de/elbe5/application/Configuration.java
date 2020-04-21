@@ -30,6 +30,8 @@ public class Configuration {
     private static Locale defaultLocale = Locale.GERMAN;
     private static Map<String,Locale> locales = new HashMap<>();
 
+    private static boolean showInactiveContent = false;
+
     static{
         locales.put("de",Locale.GERMAN);
         locales.put("en",Locale.ENGLISH);
@@ -141,6 +143,14 @@ public class Configuration {
 
     public static void setTimerInterval(int timerInterval) {
         Configuration.timerInterval = timerInterval;
+    }
+
+    public static boolean isShowInactiveContent() {
+        return showInactiveContent;
+    }
+
+    public static void setShowInactiveContent(boolean showInactiveContent) {
+        Configuration.showInactiveContent = showInactiveContent;
     }
 
     // read from config file

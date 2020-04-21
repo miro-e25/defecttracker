@@ -185,7 +185,7 @@ CREATE TABLE IF NOT EXISTS t_project
     group_id   INTEGER NOT NULL,
     phase      VARCHAR(20) NOT NULL,
     CONSTRAINT t_project_pk PRIMARY KEY (id),
-    CONSTRAINT t_project_fk1 FOREIGN KEY (id) REFERENCES t_content (id),
+    CONSTRAINT t_project_fk1 FOREIGN KEY (id) REFERENCES t_content (id) ON DELETE CASCADE,
     CONSTRAINT t_project_fk2 FOREIGN KEY (group_id) REFERENCES t_group (id)
 );
 
@@ -194,8 +194,8 @@ CREATE TABLE IF NOT EXISTS t_location
     id                 INTEGER      NOT NULL,
     project_id         INTEGER      NOT NULL,
     CONSTRAINT t_location_pk PRIMARY KEY (id),
-    CONSTRAINT t_location_fk1 FOREIGN KEY (id) REFERENCES t_content (id),
-    CONSTRAINT t_location_fk2 FOREIGN KEY (project_id) REFERENCES t_project (id)
+    CONSTRAINT t_location_fk1 FOREIGN KEY (id) REFERENCES t_content (id) ON DELETE CASCADE,
+    CONSTRAINT t_location_fk2 FOREIGN KEY (project_id) REFERENCES t_project (id) ON DELETE CASCADE
 );
 
 CREATE SEQUENCE IF NOT EXISTS s_defect_id START 1000;
@@ -219,10 +219,10 @@ CREATE TABLE IF NOT EXISTS t_defect
     due_date2        TIMESTAMP     NULL,
     close_date       TIMESTAMP     NULL,
     CONSTRAINT t_defect_pk PRIMARY KEY (id),
-    CONSTRAINT t_defect_fk1 FOREIGN KEY (id) REFERENCES t_content (id),
-    CONSTRAINT t_defect_fk2 FOREIGN KEY (location_id) REFERENCES t_location (id),
-    CONSTRAINT t_defect_fk3 FOREIGN KEY (project_id) REFERENCES t_project (id),
-    CONSTRAINT t_defect_fk4 FOREIGN KEY (plan_id) REFERENCES t_image (id),
+    CONSTRAINT t_defect_fk1 FOREIGN KEY (id) REFERENCES t_content (id) ON DELETE CASCADE,
+    CONSTRAINT t_defect_fk2 FOREIGN KEY (location_id) REFERENCES t_location (id) ON DELETE CASCADE,
+    CONSTRAINT t_defect_fk3 FOREIGN KEY (project_id) REFERENCES t_project (id) ON DELETE CASCADE,
+    CONSTRAINT t_defect_fk4 FOREIGN KEY (plan_id) REFERENCES t_image (id) ON DELETE CASCADE,
     CONSTRAINT t_defect_fk5 FOREIGN KEY (assigned_id) REFERENCES t_user (id)
 );
 
@@ -236,7 +236,7 @@ CREATE TABLE IF NOT EXISTS t_defect_comment
     comment       VARCHAR(2000) NOT NULL DEFAULT '',
     state         VARCHAR(20)   NOT NULL DEFAULT 'OPEN',
     CONSTRAINT t_defect_comment_pk PRIMARY KEY (id),
-    CONSTRAINT t_defect_comment_fk1 FOREIGN KEY (defect_id) REFERENCES t_defect (id),
+    CONSTRAINT t_defect_comment_fk1 FOREIGN KEY (defect_id) REFERENCES t_defect (id) ON DELETE CASCADE,
     CONSTRAINT t_defect_comment_fk2 FOREIGN KEY (creator_id) REFERENCES t_user (id)
 );
 
@@ -245,8 +245,8 @@ CREATE TABLE IF NOT EXISTS t_defect_comment_document
     id            INTEGER       NOT NULL,
     comment_id    INTEGER       NOT NULL,
     CONSTRAINT t_defect_comment_document_pk PRIMARY KEY (id),
-    CONSTRAINT t_defect_comment_document_fk1 FOREIGN KEY (id) REFERENCES t_file (id),
-    CONSTRAINT t_defect_comment_document_fk2 FOREIGN KEY (comment_id) REFERENCES t_defect_comment (id)
+    CONSTRAINT t_defect_comment_document_fk1 FOREIGN KEY (id) REFERENCES t_file (id) ON DELETE CASCADE,
+    CONSTRAINT t_defect_comment_document_fk2 FOREIGN KEY (comment_id) REFERENCES t_defect_comment (id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS t_defect_comment_image
@@ -254,8 +254,8 @@ CREATE TABLE IF NOT EXISTS t_defect_comment_image
     id            INTEGER       NOT NULL,
     comment_id    INTEGER       NOT NULL,
     CONSTRAINT t_defect_comment_image_pk PRIMARY KEY (id),
-    CONSTRAINT t_defect_comment_image_fk1 FOREIGN KEY (id) REFERENCES t_image (id),
-    CONSTRAINT t_defect_comment_image_fk2 FOREIGN KEY (comment_id) REFERENCES t_defect_comment (id)
+    CONSTRAINT t_defect_comment_image_fk1 FOREIGN KEY (id) REFERENCES t_image (id) ON DELETE CASCADE,
+    CONSTRAINT t_defect_comment_image_fk2 FOREIGN KEY (comment_id) REFERENCES t_defect_comment (id) ON DELETE CASCADE
 );
 
 -- global PROJECT owners

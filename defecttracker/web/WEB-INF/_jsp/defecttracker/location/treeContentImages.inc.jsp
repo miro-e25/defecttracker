@@ -38,6 +38,7 @@
                         <div class="icons">
                             <a class="icon fa fa-eye" href="/ctrl/image/show/<%=image.getId()%>" target="_blank" title="<%=$SH("_view",locale)%>"> </a>
                             <a class="icon fa fa-download" href="/ctrl/image/download/<%=image.getId()%>" title="<%=$SH("_download",locale)%>"> </a>
+                            <a class="icon fa fa-pencil" href="" onclick="return openModalDialog('/ctrl/image/openEditImage/<%=image.getId()%>');" title="<%=$SH("_edit",locale)%>"> </a>
                         </div>
                     </div>
                 </li>

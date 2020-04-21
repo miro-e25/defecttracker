@@ -255,6 +255,7 @@ public class ImageData extends FileData {
         json.put("id",getId());
         json.put("fileName",getFileName());
         json.put("name",getDisplayName());
+        json.put("displayName",getDisplayName());
         json.put("contentType",getContentType());
         json.put("width", getWidth());
         json.put("height", getHeight());

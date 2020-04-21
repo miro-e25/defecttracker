@@ -12,6 +12,7 @@
 <%@ page import="java.util.Locale" %>
 <%@ page import="de.elbe5.content.ContentData" %>
 <%@ page import="de.elbe5.defecttracker.location.LocationData" %>
+<%@ page import="de.elbe5.application.Configuration" %>
 <%@ taglib uri="/WEB-INF/formtags.tld" prefix="form" %>
 <%
     SessionRequestData rdata = SessionRequestData.getRequestData(request);
@@ -19,6 +20,7 @@
     ContentData contentData = rdata.getCurrentContent();
     assert contentData != null;
 %>
+<% if (contentData.isActive() || Configuration.isShowInactiveContent()){%>
 <li class="open">
     <span class="<%=contentData.hasUnpublishedDraft() ? "unpublished" : "published"%>">
         <%=$H(contentData.getDisplayName())%>
@@ -48,4 +50,5 @@
         }%>
     </ul>
 </li>
+<%}%>
 

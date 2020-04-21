@@ -58,6 +58,9 @@
                     <option value="<%=ProjectData.PHASE_APPROVE%>" <%=ProjectData.PHASE_APPROVE.equals(contentData.getPhase()) ? "selected" : ""%>><%=$SH(ProjectData.PHASE_APPROVE,locale)%></option>
                     <option value="<%=ProjectData.PHASE_WARRANTY%>" <%=ProjectData.PHASE_WARRANTY.equals(contentData.getPhase()) ? "selected" : ""%>><%=$SH(ProjectData.PHASE_WARRANTY,locale)%></option>
                 </form:select>
+                <form:line label="_active" padded="true">
+                    <form:check name="active" value="true" checked="<%=contentData.isActive()%>"/>
+                </form:line>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-dismiss="modal"><%=$SH("_close", locale)%>

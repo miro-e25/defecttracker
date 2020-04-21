@@ -3,9 +3,11 @@ package de.elbe5.request;
 import de.elbe5.application.Configuration;
 import de.elbe5.base.data.BinaryFile;
 import de.elbe5.base.data.KeyValueMap;
+import de.elbe5.base.json.JsonDeserializer;
 import de.elbe5.base.log.Log;
 import de.elbe5.rights.SystemZone;
 import de.elbe5.user.UserData;
+import org.json.simple.JSONObject;
 
 import javax.servlet.http.*;
 import java.io.ByteArrayOutputStream;
@@ -146,9 +148,15 @@ public abstract class RequestData extends KeyValueMap {
             } else if (type != null && type.toLowerCase().equals("application/octet-stream")) {
                 getSinglePartParams();
                 getByteStream();
+            } else if (type != null && type.toLowerCase().equals("application/json")) {
+                getSinglePartParams();
+                getJsonStream();
+            } else {
+                getSinglePartParams();
             }
+        } else {
+            getSinglePartParams();
         }
-        getSinglePartParams();
     }
 
     private void getByteStream(){
@@ -163,6 +171,25 @@ public abstract class RequestData extends KeyValueMap {
         }
         catch (IOException ioe){
             Log.error("input stream error", ioe);
+        }
+    }
+
+    private void getJsonStream(){
+        try {
+            InputStream in = request.getInputStream();
+            try {
+                JSONObject json = (JSONObject) new JsonDeserializer().deserialize(in);
+                for (Object key : json.keySet()){
+                    put(key.toString(), json.get(key));
+                }
+            }
+            catch (Exception e){
+                Log.error("unable to get params from json");
+            }
+            in.close();
+        }
+        catch (IOException ioe){
+            Log.error("json input stream error", ioe);
         }
     }
 

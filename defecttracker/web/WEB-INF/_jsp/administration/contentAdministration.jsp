@@ -1,4 +1,5 @@
-<%--
+<%@ page import="de.elbe5.application.Configuration" %>
+<%@ page import="de.elbe5.request.SessionRequestData" %><%--
   Elbe 5 CMS - A Java based modular Content Management System
   Copyright (C) 2009-2020 Michael Roennau
 

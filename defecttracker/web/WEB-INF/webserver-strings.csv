@@ -308,6 +308,7 @@ _settings;Settings;Einstellungen
 _severity;Severity;Wichtigkeit
 _show;Show;Zeigen
 _showDraft;Show draft content;Vorläufigen Inhalt zeigen
+_showInactiveContent;Show inactive content;Inaktive Inhalte anzeigen
 _showPublished;Show published content;Veröffentlichten Inhalt zeigen
 _smtpConnectionType;SMTP Conection Type;SMTP-Verbindungsart
 _smtpHost;SMTP Host;SMTP-Host
