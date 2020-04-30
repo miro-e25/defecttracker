@@ -23,7 +23,7 @@
     String title = Configuration.getAppTitle()+ (contentData!=null ? " | " + contentData.getDisplayName() : "");
 %>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<%=locale.getLanguage()%>">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
