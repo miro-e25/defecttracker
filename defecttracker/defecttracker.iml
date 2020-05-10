@@ -26,5 +26,6 @@
     <orderEntry type="library" name="docconvert" level="project" />
     <orderEntry type="library" name="jsoup" level="project" />
     <orderEntry type="library" name="json" level="project" />
+    <orderEntry type="library" name="javamelody" level="project" />
   </component>
 </module>

@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="javamelody">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/javalibs/javamelody-core-1.82.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/javalibs/jrobin-1.5.9.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
