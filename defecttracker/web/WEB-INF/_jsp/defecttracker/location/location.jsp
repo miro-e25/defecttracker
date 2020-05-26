@@ -82,7 +82,7 @@
         </div>
     </div>
     <% if (location.getPlan()!=null){%>
-    <div class="imageScrollBox">
+    <div class="imageBox">
         <img src="/ctrl/location/showDefectPlan/<%=location.getId()%>?planId=<%=location.getPlan().getId()%>" alt="" />
     </div>
     <%}%>

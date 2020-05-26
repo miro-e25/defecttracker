@@ -109,7 +109,7 @@ public class DefectCommentData extends BaseData {
     }
 
     @SuppressWarnings("unchecked")
-    public JSONObject getJson(Locale locale){
+    public JSONObject getJson(){
         JSONObject json = new JSONObject();
         json.put("id",getId());
         json.put("creationDate", DateUtil.asMillis(getCreationDate()));

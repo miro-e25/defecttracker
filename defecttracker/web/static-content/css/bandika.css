@@ -10557,9 +10557,9 @@ footer {
 
 #planContainer {
   margin: 0;
-  padding: 0;
-  overflow-x: auto;
-  overflow-y: hidden; }
+  padding: 0; }
+  #planContainer #plan {
+    max-width: 100%; }
   #planContainer #planPositioner {
     position: relative;
     width: 60px; }

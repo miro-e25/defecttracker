@@ -33,13 +33,9 @@ import java.util.Locale;
 
 public class LocationData extends ContentData {
 
-    public static int MAX_PLAN_WIDTH = 800;
-    public static int MAX_THUMBNAIL_WIDTH = 200;
-    public static int MAX_THUMBNAIL_HEIGHT = 200;
-
-    private static List<String> contentTypes=new ArrayList<>();
-    private static List<String> documentTypes=new ArrayList<>();
-    private static List<String> imageTypes=new ArrayList<>();
+    private static final List<String> contentTypes=new ArrayList<>();
+    private static final List<String> documentTypes=new ArrayList<>();
+    private static final List<String> imageTypes=new ArrayList<>();
 
     static{
         contentTypes.add(DefectData.class.getSimpleName());
@@ -155,7 +151,7 @@ public class LocationData extends ContentData {
         if (file != null){
             plan = new PlanImageData();
             plan.setCreateValues(this,rdata);
-            plan.createFromBinaryFile(file, plan.getMaxPreviewWidth(), plan.getMaxPreviewHeight());
+            plan.createFromBinaryFile(file, PlanImageData.STD_SIZE, PlanImageData.STD_SIZE, plan.getMaxPreviewWidth(), plan.getMaxPreviewHeight(), false);
             plan.setDisplayName(Strings.string("_plan",rdata.getSessionLocale()));
         }
         if (getDisplayName().isEmpty()) {

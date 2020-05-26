@@ -26,7 +26,7 @@
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        <div class="modal-body imageScrollBox">
+        <div class="modal-body imageBox">
             <img src="/ctrl/defect/showFullDefectPlan/<%=contentId%>" alt=""/>
         </div>
         <div class="modal-footer">

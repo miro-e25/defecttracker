@@ -38,9 +38,9 @@ public class DefectData extends ContentData {
     public static final String STATE_REJECTED = "REJECTED";
     public static final String STATE_DONE = "DONE";
 
-    private static List<String> contentTypes = new ArrayList<>();
-    private static List<String> documentTypes = new ArrayList<>();
-    private static List<String> imageTypes = new ArrayList<>();
+    private static final List<String> contentTypes = new ArrayList<>();
+    private static final List<String> documentTypes = new ArrayList<>();
+    private static final List<String> imageTypes = new ArrayList<>();
 
     static {
         documentTypes.add(DefectDocumentData.class.getSimpleName());
@@ -69,12 +69,6 @@ public class DefectData extends ContentData {
 
     protected String projectName="";
     protected String locationName="";
-    protected String assignedName = "";
-    protected Set<Integer> commenterIds = new HashSet<>();
-
-    // tmp
-
-    protected int tempId = 0;
 
     // base data
 
@@ -232,14 +226,6 @@ public class DefectData extends ContentData {
         return comments;
     }
 
-    public int getTempId() {
-        return tempId;
-    }
-
-    public void setTempId(int tempId) {
-        this.tempId = tempId;
-    }
-
     public String getProjectName() {
         if (projectName.isEmpty()){
             ProjectData data= ContentCache.getContent(projectId,ProjectData.class);
@@ -341,7 +327,7 @@ public class DefectData extends ContentData {
     @Override
     public void readFrontendCreateRequestData(SessionRequestData rdata) {
         Locale locale = rdata.getLocale();
-        readCommonRequestData(rdata,locale);
+        readCommonRequestData(rdata);
         setDescription(rdata.getString("description").trim());
         setDueDate1(rdata.getDate("dueDate1", locale));
         setPositionX(rdata.getInt("positionX"));
@@ -361,14 +347,14 @@ public class DefectData extends ContentData {
     @Override
     public void readFrontendUpdateRequestData(SessionRequestData rdata) {
         Locale locale = rdata.getLocale();
-        readCommonRequestData(rdata,locale);
+        readCommonRequestData(rdata);
         setDueDate2(rdata.getDate("dueDate2", locale));
         if (getAssignedId()==0) {
             rdata.addIncompleteField("assigned");
         }
     }
 
-    public void readCommonRequestData(SessionRequestData rdata, Locale locale) {
+    public void readCommonRequestData(SessionRequestData rdata) {
         setAssignedId(rdata.getInt("assigned"));
         setLot(rdata.getString("lot"));
         setCosts(rdata.getInt("costs"));
@@ -408,7 +394,7 @@ public class DefectData extends ContentData {
 
 
     @SuppressWarnings("unchecked")
-    public JSONObject getJson(Locale locale){
+    public JSONObject getJson(){
         JSONObject json = new JSONObject();
         json.put("id",getId());
         json.put("creationDate", DateUtil.asMillis(getCreationDate()));

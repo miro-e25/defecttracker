@@ -49,6 +49,7 @@ public class DefectApiController extends BaseApiController {
     }
 
     public IApiView uploadNewDefect(ApiRequestData rdata) {
+        Log.log("uploadNewDefect");
         UserData user = rdata.getLoginUser();
         if (user==null)
             return new ApiResponseCodeView(ResponseCode.UNAUTHORIZED);
@@ -60,7 +61,7 @@ public class DefectApiController extends BaseApiController {
         DefectData data = new DefectData();
         data.setCreateValues(location, rdata);
         data.readApiRequestData(rdata);
-        //Log.log(data.getJson(rdata.getLocale()).toJSONString());
+        Log.log(data.getJson().toJSONString());
         if (!ContentBean.getInstance().saveContent(data)) {
             return new ApiResponseCodeView(ResponseCode.BAD_REQUEST);
         }
@@ -71,7 +72,7 @@ public class DefectApiController extends BaseApiController {
     }
 
     public IApiView uploadNewDefectImage(ApiRequestData rdata) {
-        //Log.log("uploadNewDefectImage");
+        Log.log("uploadNewDefectImage");
         UserData user = rdata.getLoginUser();
         if (user == null)
             return new ApiResponseCodeView(ResponseCode.UNAUTHORIZED);
@@ -95,6 +96,7 @@ public class DefectApiController extends BaseApiController {
     }
 
     public IApiView uploadNewComment(ApiRequestData rdata) {
+        Log.log("uploadNewComment");
         UserData user = rdata.getLoginUser();
         if (user == null)
             return new ApiResponseCodeView(ResponseCode.UNAUTHORIZED);
@@ -115,7 +117,7 @@ public class DefectApiController extends BaseApiController {
     }
 
     public IApiView uploadNewCommentImage(ApiRequestData rdata) {
-        //Log.log("uploadNewCommentImage");
+        Log.log("uploadNewCommentImage");
         UserData user = rdata.getLoginUser();
         if (user == null)
             return new ApiResponseCodeView(ResponseCode.UNAUTHORIZED);

@@ -63,7 +63,6 @@ public class ProjectApiController extends BaseApiController {
         if (user==null)
             return new ApiResponseCodeView(ResponseCode.UNAUTHORIZED);
         JSONObject json = getProjectsJson(user);
-        //Log.log(json.toJSONString());
         return new JsonView(json.toJSONString());
     }
 
@@ -105,7 +104,7 @@ public class ProjectApiController extends BaseApiController {
                 JSONArray jsDefects=new JSONArray();
                 jsLocation.put("defects", jsDefects);
                 for (DefectData defect : location.getChildren(DefectData.class)){
-                    JSONObject jsDefect = defect.getJson(locale);
+                    JSONObject jsDefect = defect.getJson();
                     jsDefects.add(jsDefect);
                     JSONArray jsImages=new JSONArray();
                     jsDefect.put("images", jsImages);
@@ -117,7 +116,7 @@ public class ProjectApiController extends BaseApiController {
                     JSONArray jsComments=new JSONArray();
                     jsDefect.put("comments", jsComments);
                     for (DefectCommentData comment : defect.getComments()){
-                        JSONObject jsComment = comment.getJson(locale);
+                        JSONObject jsComment = comment.getJson();
                         jsComments.add(jsComment);
                         JSONArray jsCommentImages=new JSONArray();
                         jsComment.put("images", jsCommentImages);

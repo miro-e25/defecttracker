@@ -52,6 +52,7 @@ public class LocationApiController extends BaseApiController {
         return KEY;
     }
 
+    @Deprecated
     public IApiView downloadLocationDefectPlan(ApiRequestData rdata) {
         UserData user = rdata.getLoginUser();
         if (user==null)

@@ -58,15 +58,14 @@
         <form:text name="costs" label="_costs" value="<%=defect.getCostsString()%>"/>
         <form:date name="dueDate1" label="_dueDate" value="<%=StringUtil.toHtmlDate(defect.getDueDate1(),locale)%>" required="true"/>
         <% if (location.getPlan() != null) {%>
-        <form:line label="_position">
-            <div id="planContainer">
-                <img id="plan" src="/ctrl/image/show/<%=defect.getPlanId()%>" alt="" style="border:1px solid red"/>
-                <div id="planPositioner">
-                    <img id="arrow" src="/static-content/img/redarrow.svg" alt=""/>
-                    <span><%=defect.getDisplayId()%></span>
-                </div>
+        <form:line label="_position"> </form:line>
+        <div id="planContainer">
+            <img id="plan" src="/ctrl/image/show/<%=defect.getPlanId()%>" alt="" style="border:1px solid red"/>
+            <div id="planPositioner">
+                <img id="arrow" src="/static-content/img/redarrow.svg" alt=""/>
+                <span><%=defect.getDisplayId()%></span>
             </div>
-        </form:line>
+        </div>
         <input type="hidden" name="positionX" id="positionX" value="<%=defect.getPositionX()%>"/>
         <input type="hidden" name="positionY" id="positionY" value="<%=defect.getPositionY()%>"/>
         <%}%>
@@ -85,28 +84,29 @@
 <script type="text/javascript">
     let posX = 0;
     let posY = 0;
-    let planWidth=0;
-    let planHeight=0;
     let $container = $('#planContainer');
     let $positioner = $('#planPositioner');
-    let $planSelect = $('#planId');
     let $plan = $('#plan');
+
     $plan.on('click', function (event) {
+        let position=$container.position();
+        //console.log('container position=' + position.left + ',' + position.top);
         let offset = $container.offset();
-        posX = Math.round(event.pageX - offset.left + $container.scrollLeft());
+        //console.log('container offset=' + offset.left + ',' + offset.top);
+        posX = Math.round(event.pageX - offset.left );
         posY = Math.round(event.pageY - offset.top);
+        //console.log('posX,posY=' + posX + ',' + posY);
         setPositioner();
     });
 
     function setPositioner() {
-        let containerPosition=$container.position();
-        //console.log('posX,posY=' + posX + ',' + posY);
-        $positioner.css('left', posX + containerPosition.left - 25);
+        let planPosition=$plan.position();
+        $positioner.css('left', posX - 11);
         //relative, so go top
-        $positioner.css('top', posY + containerPosition.top - 5 - planHeight);
+        $positioner.css('top', posY - 5 - $plan.height());
         // both percent * 100
-        let positionX=Math.round(posX*100*100/planWidth);
-        let positionY=Math.round(posY*100*100/planHeight);
+        let positionX=Math.round(posX*100*100/$plan.width());
+        let positionY=Math.round(posY*100*100/$plan.height());
         //console.log('positionX,positionY=' + positionX + ',' + positionY);
         $('#positionX').val(positionX);
         $('#positionY').val(positionY);
@@ -117,11 +117,8 @@
     });
 
     $plan.load(function () {
-        planWidth=<%=location.getPlan().getWidth()%>;
-        planHeight=<%=location.getPlan().getHeight()%>;
-        //console.log('posWidth,posHeight=' + planWidth + ',' + planHeight);
-        posX = Math.floor((<%=defect.getPositionX()%>)*planWidth/100/100);
-        posY = Math.floor((<%=defect.getPositionY()%>)*planHeight/100/100);
+        posX = Math.floor((<%=defect.getPositionX()%>)*$plan.width()/100/100);
+        posY = Math.floor((<%=defect.getPositionY()%>)*$plan.height()/100/100);
         //console.log('posX,posY=' + posX + ',' + posY);
         setPositioner();
     });

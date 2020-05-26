@@ -16,11 +16,13 @@ import java.util.List;
 
 public class PlanImageData extends ImageData {
 
-    public static int MAX_PREVIEW_WIDTH = 800;
-    public static int MAX_PREVIEW_HEIGHT = 800;
+    public static int STD_SIZE = 2190;
 
-    public static int CROP_WIDTH = 300;
-    public static int CROP_HEIGHT = 200;
+    public static int MAX_PREVIEW_WIDTH = 600;
+    public static int MAX_PREVIEW_HEIGHT = 600;
+
+    public static int CROP_WIDTH = 600;
+    public static int CROP_HEIGHT = 300;
 
     @Override
     public int getMaxPreviewWidth(){

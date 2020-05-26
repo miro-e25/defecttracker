@@ -30,6 +30,7 @@ public class JsonView implements IApiView {
         response.setHeader("Expires", "Tues, 01 Jan 1980 00:00:00 GMT");
         response.setHeader("Cache-Control", "no-cache");
         response.setHeader("Pragma", "no-cache");
+        Log.log("sending json: " + json);
         try {
             ServletOutputStream out = response.getOutputStream();
             if (json == null || json.length() == 0) {
