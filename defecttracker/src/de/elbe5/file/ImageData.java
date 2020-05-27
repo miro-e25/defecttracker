@@ -25,8 +25,8 @@ public class ImageData extends FileData {
     protected byte[] previewBytes = null;
     protected boolean hasPreview = false;
 
-    public int maxWidth=0;
-    public int maxHeight=0;
+    private int maxWidth=0;
+    private int maxHeight=0;
     public int maxPreviewWidth= MAX_PREVIEW_WIDTH;
     public int maxPreviewHeight= MAX_PREVIEW_HEIGHT;
 
@@ -119,8 +119,8 @@ public class ImageData extends FileData {
     public void readSettingsRequestData(SessionRequestData rdata) {
         super.readSettingsRequestData(rdata);
         BinaryFile file = rdata.getFile("file");
-        if (maxWidth != 0 || maxHeight != 0)
-            createFromBinaryFile(file, maxWidth, maxHeight, getMaxPreviewWidth(), getMaxPreviewHeight(), true);
+        if (getMaxWidth() != 0 || getMaxHeight() != 0)
+            createFromBinaryFile(file, getMaxWidth(), getMaxHeight(), getMaxPreviewWidth(), getMaxPreviewHeight(), true);
         else
             createFromBinaryFile(file, getMaxPreviewWidth(), getMaxPreviewHeight());
     }

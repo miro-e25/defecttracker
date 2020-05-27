@@ -18,7 +18,6 @@ import de.elbe5.defecttracker.location.PlanImageData;
 import de.elbe5.file.FileBean;
 import de.elbe5.request.*;
 import de.elbe5.servlet.ControllerCache;
-import de.elbe5.timer.TimerController;
 import de.elbe5.user.UserCache;
 import de.elbe5.user.UserData;
 import de.elbe5.view.*;
@@ -172,7 +171,7 @@ public class DefectController extends DefectBaseController {
         DefectCommentData data = new DefectCommentData();
         data.setCreateValues(defect, rdata.getUserId());
         rdata.setSessionObject(DefectCommentData.KEY_COMMENT, data);
-        return showEditDefectComment();
+        return showCreateDefectComment();
     }
 
     public IView saveDefectComment(SessionRequestData rdata) {
@@ -182,11 +181,11 @@ public class DefectController extends DefectBaseController {
         assert(data!=null);
         data.readRequestData(rdata);
         if (!rdata.checkFormErrors()) {
-            return showEditDefectComment();
+            return showCreateDefectComment();
         }
         if (!DefectBean.getInstance().saveDefectComment(data)) {
             setSaveError(rdata);
-            return showEditDefectComment();
+            return showCreateDefectComment();
         }
         List<BinaryFile> documents = rdata.getFileList("files");
         for (BinaryFile f : documents) {
@@ -242,8 +241,8 @@ public class DefectController extends DefectBaseController {
         return new UrlView("/WEB-INF/_jsp/defecttracker/defect/comment.ajax.jsp");
     }
 
-    private IView showEditDefectComment() {
-        return new UrlView("/WEB-INF/_jsp/defecttracker/defect/editComment.ajax.jsp");
+    private IView showCreateDefectComment() {
+        return new UrlView("/WEB-INF/_jsp/defecttracker/defect/createComment.ajax.jsp");
     }
 
 }

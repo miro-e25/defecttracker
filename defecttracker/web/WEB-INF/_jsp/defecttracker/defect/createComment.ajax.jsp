@@ -13,11 +13,12 @@
 <%@ page import="java.util.Locale" %>
 <%@ page import="de.elbe5.defecttracker.defect.DefectData" %>
 <%@ page import="de.elbe5.defecttracker.defect.DefectCommentData" %>
+<%@ page import="de.elbe5.content.ContentCache" %>
 <%@ taglib uri="/WEB-INF/formtags.tld" prefix="form" %>
 <%
     SessionRequestData rdata = SessionRequestData.getRequestData(request);
     Locale locale = rdata.getLocale();
-    DefectData defect = rdata.getCurrentContent(DefectData.class);
+    DefectData defect = ContentCache.getContent(rdata.getId(),DefectData.class);
     assert (defect != null);
     DefectCommentData comment = rdata.getSessionObject(DefectCommentData.KEY_COMMENT,DefectCommentData.class);
     String url = "/ctrl/defect/saveDefectComment/" + defect.getId();
@@ -43,6 +44,7 @@
                     <option value="<%=DefectData.STATE_DONE%>" <%=DefectData.STATE_DONE.equals(defect.getState()) ? "selected" : ""%>><%=$SH(DefectData.STATE_DONE,locale)%></option>
                 </form:select>
                 <form:file name="files" label="_addDocumentsAndImages" required="false" multiple="true"/>
+                <form:line><%=$SH("_uploadHint", locale)%></form:line>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-dismiss="modal"><%=$SH("_close",locale)%>

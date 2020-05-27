@@ -72,6 +72,7 @@
         <form:textarea name="positionComment" label="_positionComment" height="5em"><%=StringUtil.toHtmlMultiline(defect.getPositionComment())%>
         </form:textarea>
         <form:file name="files" label="_addDocumentsAndImages" required="false" multiple="true"/>
+        <form:line><%=$SH("_uploadHint", locale)%></form:line>
         <div>
             <button type="button" class="btn btn-outline-secondary" onclick="linkTo('/ctrl/location/show/<%=location.getId()%>');"><%=$SH("_cancel", locale)%>
             </button>

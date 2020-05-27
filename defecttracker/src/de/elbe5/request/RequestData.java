@@ -179,7 +179,7 @@ public abstract class RequestData extends KeyValueMap {
             InputStream in = request.getInputStream();
             try {
                 JSONObject json = (JSONObject) new JsonDeserializer().deserialize(in);
-                Log.log("received json: "+ json.toJSONString());
+                //Log.log("received json: "+ json.toJSONString());
                 for (Object key : json.keySet()){
                     put(key.toString(), json.get(key));
                 }

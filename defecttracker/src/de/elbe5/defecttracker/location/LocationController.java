@@ -17,7 +17,6 @@ import de.elbe5.content.ContentCache;
 import de.elbe5.file.ImageBean;
 import de.elbe5.request.*;
 import de.elbe5.servlet.ControllerCache;
-import de.elbe5.timer.TimerController;
 import de.elbe5.view.BinaryFileView;
 import de.elbe5.view.IView;
 import de.elbe5.view.ResponseCodeView;

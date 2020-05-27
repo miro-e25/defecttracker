@@ -46,6 +46,7 @@
                 <form:textarea name="description" label="_description" height="5em"><%=$H(contentData.getDescription())%></form:textarea>
                 <% if (contentData.isNew()){%>
                 <form:file name="file" label="_plan" />
+                <form:line><%=$SH("_uploadHint", locale)%></form:line>
                 <%}%>
                 <form:line label="_active" padded="true">
                     <form:check name="active" value="true" checked="<%=contentData.isActive()%>"/>

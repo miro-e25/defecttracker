@@ -34,6 +34,14 @@ public class PlanImageData extends ImageData {
         return MAX_PREVIEW_HEIGHT;
     }
 
+    public int getMaxWidth() {
+        return STD_SIZE;
+    }
+
+    public int getMaxHeight() {
+        return STD_SIZE;
+    }
+
     public BinaryFile createLocationDefectPlan(byte[] primaryArrowBytes, List<DefectData> defects, float scale){
         BinaryFile file=null;
         try {
