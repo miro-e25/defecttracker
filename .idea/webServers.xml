@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="74c6991a-5227-4682-b133-1fb362e609da" name="defecttracker.e25" url="http://defecttracker.e25">
+        <fileTransfer rootFolder="/home/tomcat" accessType="SFTP" host="192.168.25.8" port="22" sshConfigId="522e3152-49dd-42dc-a1f9-3d868f6da237" sshConfig="tomcat@192.168.25.8:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

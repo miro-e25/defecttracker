@@ -10,3 +10,4 @@
 .idea/$CACHE_FILE$
 .idea/inspectionProfiles/Project_Default.xml
 .idea/artifacts/defecttracker.xml
+war/ROOT.war
