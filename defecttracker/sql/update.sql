@@ -1,5 +1,7 @@
 --version 1.0
 
+alter table t_content add language      VARCHAR(10)   NOT NULL DEFAULT 'de';
+
 alter table t_project drop CONSTRAINT t_project_fk1;
 alter table t_project add CONSTRAINT t_project_fk1 FOREIGN KEY (id) REFERENCES t_content (id) ON DELETE CASCADE;
 

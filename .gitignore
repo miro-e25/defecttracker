@@ -11,3 +11,6 @@
 .idea/inspectionProfiles/Project_Default.xml
 .idea/artifacts/defecttracker.xml
 war/ROOT.war
+.idea/deployment.xml
+.idea/webServers.xml
+.idea/deployment.xml
