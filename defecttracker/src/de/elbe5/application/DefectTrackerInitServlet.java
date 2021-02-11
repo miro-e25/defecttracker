@@ -10,8 +10,6 @@ package de.elbe5.application;
 
 import de.elbe5.base.cache.Strings;
 import de.elbe5.base.log.Log;
-import de.elbe5.company.CompanyCache;
-import de.elbe5.company.CompanyController;
 import de.elbe5.defecttracker.defect.*;
 import de.elbe5.defecttracker.location.*;
 import de.elbe5.defecttracker.project.ProjectApiController;
@@ -61,7 +59,6 @@ public class DefectTrackerInitServlet extends InitServlet {
         ContentController.register(new ContentController());
         DocumentController.register(new DocumentController());
         ImageController.register(new ImageController());
-        CompanyController.register(new CompanyController());
         GroupController.register(new GroupController());
         TimerController.register(new TimerController());
         UserController.register(new DefectUserController());
@@ -90,7 +87,6 @@ public class DefectTrackerInitServlet extends InitServlet {
         FileFactory.addDocumentClassInfo(DefectCommentDocumentData.class, DefectCommentDocumentBean.getInstance());
         FileFactory.addImageClassInfo(DefectCommentImageData.class, DefectCommentImageBean.getInstance());
         ContentCache.load();
-        CompanyCache.load();
         UserCache.load();
         Timer.getInstance().registerTimerTask(new HeartbeatTaskData());
         Timer.getInstance().registerTimerTask(new CleanupTaskData());

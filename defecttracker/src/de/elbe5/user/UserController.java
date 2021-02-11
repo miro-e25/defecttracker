@@ -71,88 +71,12 @@ public class UserController extends Controller {
         return showHome();
     }
 
-    public IView showCaptcha(SessionRequestData rdata) {
-        String captcha = (String) rdata.getSessionObject(RequestData.KEY_CAPTCHA);
-        assert(captcha!=null);
-        BinaryFile data = UserSecurity.getCaptcha(captcha);
-        assert data != null;
-        return new BinaryFileView(data);
-    }
-
-    public IView renewCaptcha(SessionRequestData rdata) {
-        rdata.setSessionObject(RequestData.KEY_CAPTCHA, UserSecurity.generateCaptchaString());
-        return new ResponseCodeView(ResponseCode.OK);
-    }
-
     public IView logout(SessionRequestData rdata) {
         Locale locale = rdata.getLocale();
         rdata.setSessionUser(null);
         rdata.resetSession();
         rdata.setMessage(Strings.string("_loggedOut",locale), SessionRequestData.MESSAGE_TYPE_SUCCESS);
         return showHome();
-    }
-
-    public IView openRegistration(SessionRequestData rdata) {
-        rdata.put("userData", new UserData());
-        rdata.setSessionObject(RequestData.KEY_CAPTCHA, UserSecurity.generateCaptchaString());
-        return showRegistration();
-    }
-
-    public IView register(SessionRequestData rdata) {
-        UserData user = new UserData();
-        rdata.put("userData", user);
-        user.readRegistrationRequestData(rdata);
-        if (!rdata.checkFormErrors()) {
-            return showRegistration();
-        }
-        if (UserBean.getInstance().doesLoginExist(user.getLogin())) {
-            rdata.addFormField("login");
-            rdata.addFormError(Strings.string("_loginExistsError",rdata.getLocale()));
-        }
-        if (UserBean.getInstance().doesEmailExist(user.getEmail())) {
-            rdata.addFormField("email");
-            rdata.addFormError(Strings.string("_emailInUseError",rdata.getLocale()));
-        }
-        String captchaString = rdata.getString("captcha");
-        if (!captchaString.equals(rdata.getSessionObject(RequestData.KEY_CAPTCHA))) {
-            rdata.addFormField("captcha");
-            rdata.addFormError(Strings.string("_captchaError",rdata.getLocale()));
-        }
-        if (!rdata.hasFormError()) {
-            return showRegistration();
-        }
-        user.setApproved(false);
-        user.setApprovalCode(UserSecurity.getApprovalString());
-        user.setId(UserBean.getInstance().getNextId());
-        if (!UserBean.getInstance().saveUser(user)) {
-            setSaveError(rdata);
-            return showRegistration();
-        }
-        Locale locale = rdata.getLocale();
-        String mailText = Strings.string("_registrationVerifyMail",locale) + " " + rdata.getSessionHost() + "/ctrl/user/verifyEmail/" + user.getId() + "?approvalCode=" + user.getApprovalCode();
-        if (!MailHelper.sendPlainMail(user.getEmail(), Strings.string("_registrationRequest",locale), mailText)) {
-            rdata.setMessage(Strings.string("_emailError",rdata.getLocale()), SessionRequestData.MESSAGE_TYPE_ERROR);
-            return showRegistration();
-        }
-        return showRegistrationDone();
-    }
-
-    public IView verifyEmail(SessionRequestData rdata) {
-        int userId = rdata.getId();
-        String approvalCode = rdata.getString("approvalCode");
-        UserData data = UserBean.getInstance().getUser(userId);
-        if (approvalCode.isEmpty() || !approvalCode.equals(data.getApprovalCode())) {
-            rdata.setMessage(Strings.string("_emailVerificationFailed",rdata.getLocale()), SessionRequestData.MESSAGE_TYPE_ERROR);
-            return showHome();
-        }
-        UserBean.getInstance().saveUserVerifyEmail(data);
-        Locale locale = rdata.getLocale();
-        String mailText = Strings.string("_registrationRequestMail",locale) + " " + data.getName() + "(" + data.getId() + ")";
-        if (!MailHelper.sendPlainMail(Configuration.getMailReceiver(), Strings.string("_registrationRequest",locale), mailText)) {
-            rdata.setMessage(Strings.string("_emailError",rdata.getLocale()), SessionRequestData.MESSAGE_TYPE_ERROR);
-            return showRegistration();
-        }
-        return showEmailVerification();
     }
 
     public IView openEditUser(SessionRequestData rdata) {
@@ -302,24 +226,6 @@ public class UserController extends Controller {
 
     protected IView showChangeProfile() {
         return new UrlView("/WEB-INF/_jsp/user/changeProfile.ajax.jsp");
-    }
-
-    protected IView showRegistration() {
-        JspContentData contentData = new JspContentData();
-        contentData.setJsp("/WEB-INF/_jsp/user/registration.jsp");
-        return new ContentView(contentData);
-    }
-
-    protected IView showRegistrationDone() {
-        JspContentData contentData = new JspContentData();
-        contentData.setJsp("/WEB-INF/_jsp/user/registrationDone.jsp");
-        return new ContentView(contentData);
-    }
-
-    protected IView showEmailVerification() {
-        JspContentData contentData = new JspContentData();
-        contentData.setJsp("/WEB-INF/_jsp/user/verifyRegistrationEmail.jsp");
-        return new ContentView(contentData);
     }
 
 }

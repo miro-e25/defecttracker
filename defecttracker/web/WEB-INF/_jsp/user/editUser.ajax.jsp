@@ -15,15 +15,12 @@
 <%@ page import="de.elbe5.user.UserData" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Locale" %>
-<%@ page import="de.elbe5.company.CompanyBean" %>
-<%@ page import="de.elbe5.company.CompanyData" %>
 <%@ taglib uri="/WEB-INF/formtags.tld" prefix="form" %>
 <%
     SessionRequestData rdata = SessionRequestData.getRequestData(request);
     Locale locale = rdata.getLocale();
     UserData user = (UserData) rdata.getSessionObject("userData");
     assert user != null;
-    List<CompanyData> companies = CompanyBean.getInstance().getAllCompanies();
     List<GroupData> groups = GroupBean.getInstance().getAllGroups();
     String label;
     String url = "/ctrl/user/saveUser/" + user.getId();
@@ -49,19 +46,10 @@
                 <form:text name="title" label="_title" value="<%=$H(user.getTitle())%>"/>
                 <form:text name="firstName" label="_firstName" value="<%=$H(user.getFirstName())%>"/>
                 <form:text name="lastName" label="_lastName" required="true" value="<%=$H(user.getLastName())%>"/>
-                <form:select name="companyId" label="_company">
-                    <option value="0" <%=user.getCompanyId()==0 ? "selected" : ""%>><%=$SH("_pleaseSelect", locale)%></option>
-                    <% for (CompanyData data : companies){%>
-                    <option value="<%=data.getId()%>" <%=user.getCompanyId()==data.getId() ? "selected" : ""%>><%=$H(data.getName())%></option>
-                    <%}%>
-                </form:select>
                 <form:textarea name="notes" label="_notes" height="5rem"><%=$H(user.getNotes())%>
                 </form:textarea>
                 <form:file name="portrait" label="_portrait"><% if (user.hasPortrait()) {%><img src="/ctrl/user/showPortrait/<%=user.getId()%>" alt="<%=$H(user.getName())%>"/> <%}%>
                 </form:file>
-                <form:line label="_approved" padded="true">
-                    <form:check name="approved" value="true" checked="<%=user.isApproved()%>"></form:check>
-                </form:line>
                 <h3><%=$SH("_address",locale)%>
                 </h3>
                 <form:text name="street" label="_street" value="<%=$H(user.getStreet())%>"/>
@@ -71,9 +59,6 @@
                 <h3><%=$SH("_contact",locale)%>
                 </h3>
                 <form:text name="email" label="_email" required="true" value="<%=$H(user.getEmail())%>"/>
-                <form:line label="_emailVerified" padded="true">
-                    <form:check name="emailVerified" value="true" checked="<%=user.isEmailVerified()%>"></form:check>
-                </form:line>
                 <form:text name="phone" label="_phone" value="<%=$H(user.getPhone())%>"/>
                 <form:text name="fax" label="_fax" value="<%=$H(user.getFax())%>"/>
                 <form:text name="mobile" label="_mobile" value="<%=$H(user.getMobile())%>"/>

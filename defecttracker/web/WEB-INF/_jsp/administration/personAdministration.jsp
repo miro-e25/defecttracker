@@ -25,7 +25,6 @@
                 </a>
                 <ul>
                     <%if (rdata.hasSystemRight(SystemZone.USER)) {%>
-                    <jsp:include page="../company/companyAdministration.inc.jsp" flush="true"/>
                     <jsp:include page="../group/groupAdministration.inc.jsp" flush="true"/>
                     <jsp:include page="../user/userAdministration.inc.jsp" flush="true"/>
                     <%}%>

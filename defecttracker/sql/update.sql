@@ -31,3 +31,13 @@ alter table t_defect_comment_image drop CONSTRAINT t_defect_comment_image_fk1;
 alter table t_defect_comment_image drop CONSTRAINT t_defect_comment_image_fk2;
 alter table t_defect_comment_image add CONSTRAINT t_defect_comment_image_fk1 FOREIGN KEY (id) REFERENCES t_image (id) ON DELETE CASCADE;
 alter table t_defect_comment_image add CONSTRAINT t_defect_comment_image_fk2 FOREIGN KEY (comment_id) REFERENCES t_defect_comment (id) ON DELETE CASCADE;
+
+--
+
+alter table t_user drop column company_id;
+alter table t_user drop column approval_code;
+alter table t_user drop column approved;
+alter table t_user drop column email_verified;
+
+drop table t_company;
+drop sequence s_company_id;

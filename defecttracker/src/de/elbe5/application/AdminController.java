@@ -89,22 +89,6 @@ public class AdminController extends Controller {
         return openSystemAdministration(rdata);
     }
 
-    public IView openExecuteDatabaseScript(SessionRequestData rdata) {
-        checkRights(rdata.hasSystemRight(SystemZone.APPLICATION));
-        return showExecuteDatabaseScript();
-    }
-
-    public IView executeDatabaseScript(SessionRequestData rdata) {
-        checkRights(rdata.hasSystemRight(SystemZone.APPLICATION));
-        String script = rdata.getString("script");
-        if (!DbConnector.getInstance().executeScript(script)) {
-            rdata.setMessage("script could not be executed", SessionRequestData.MESSAGE_TYPE_ERROR);
-            return showExecuteDatabaseScript();
-        }
-        rdata.setMessage(Strings.string("_scriptExecuted",rdata.getLocale()), SessionRequestData.MESSAGE_TYPE_SUCCESS);
-        return new CloseDialogView("/ctrl/admin/openSystemAdministration");
-    }
-
     public IView reloadContentCache(SessionRequestData rdata) {
         checkRights(rdata.hasSystemRight(SystemZone.APPLICATION));
         ContentCache.setDirty();
@@ -132,10 +116,6 @@ public class AdminController extends Controller {
         checkRights(rdata.hasSystemRight(SystemZone.CONTENTEDIT));
         Configuration.setShowInactiveContent(!Configuration.isShowInactiveContent());
         return openContentAdministration(rdata);
-    }
-
-    protected IView showExecuteDatabaseScript() {
-        return new UrlView("/WEB-INF/_jsp/administration/executeDatabaseScript.ajax.jsp");
     }
 
     private IView showEditConfiguration() {

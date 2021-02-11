@@ -14,3 +14,4 @@ war/ROOT.war
 .idea/deployment.xml
 .idea/webServers.xml
 .idea/deployment.xml
+.idea/sqldialects.xml

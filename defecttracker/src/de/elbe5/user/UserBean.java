@@ -47,7 +47,7 @@ public class UserBean extends DbBean {
     }
 
 
-    private static String SELECT_USER_SQL = "SELECT id,change_date,company_id,title,first_name,last_name,street,zipCode,city,country,email,phone,mobile,notes,(portrait IS NOT NULL) as has_portrait,login,approval_code,approved,email_verified,locked,deleted FROM t_user ";
+    private static String SELECT_USER_SQL = "SELECT id,change_date,title,first_name,last_name,street,zipCode,city,country,email,phone,mobile,notes,(portrait IS NOT NULL) as has_portrait,login,locked,deleted FROM t_user ";
 
     protected boolean changedUser(Connection con, UserData data) {
         return changedLogin(con, data);
@@ -80,37 +80,10 @@ public class UserBean extends DbBean {
         return list;
     }
 
-    private static String GET_COMPANY_USERS_SQL = SELECT_USER_SQL + " WHERE company_id=? AND deleted=FALSE";
-
-    public List<UserData> getCompanyUsers(int companyId) {
-        List<UserData> list = new ArrayList<>();
-        Connection con = getConnection();
-        PreparedStatement pst = null;
-        UserData data;
-        try {
-            pst = con.prepareStatement(GET_COMPANY_USERS_SQL);
-            pst.setInt(1,companyId);
-            try (ResultSet rs = pst.executeQuery()) {
-                while (rs.next()) {
-                    data = new UserData();
-                    readUserData(data, rs);
-                    list.add(data);
-                }
-            }
-        } catch (SQLException se) {
-            Log.error("sql error", se);
-        } finally {
-            closeStatement(pst);
-            closeConnection(con);
-        }
-        return list;
-    }
-
     private void readUserData(UserData data, ResultSet rs) throws SQLException {
         int i = 1;
         data.setId(rs.getInt(i++));
         data.setChangeDate(rs.getTimestamp(i++).toLocalDateTime());
-        data.setCompanyId(rs.getInt(i++));
         data.setTitle(rs.getString(i++));
         data.setFirstName(rs.getString(i++));
         data.setLastName(rs.getString(i++));
@@ -125,15 +98,12 @@ public class UserBean extends DbBean {
         data.setHasPortrait(rs.getBoolean(i++));
         data.setLogin(rs.getString(i++));
         data.setPassword("");
-        data.setApprovalCode(rs.getString(i++));
-        data.setApproved(rs.getBoolean(i++));
-        data.setEmailVerified(rs.getBoolean(i++));
         data.setLocked(rs.getBoolean(i++));
         data.setDeleted(rs.getBoolean(i));
     }
 
 
-    private static String LOGIN_SQL = "SELECT pwd,id,change_date,first_name,last_name,email FROM t_user WHERE login=? AND approved=TRUE AND locked=FALSE AND deleted=FALSE";
+    private static String LOGIN_SQL = "SELECT pwd,id,change_date,first_name,last_name,email FROM t_user WHERE login=? AND locked=FALSE AND deleted=FALSE";
 
     public UserData loginUser(String login, String pwd) {
         Connection con = getConnection();
@@ -155,7 +125,6 @@ public class UserBean extends DbBean {
                         data.setFirstName(rs.getString(i++));
                         data.setLastName(rs.getString(i++));
                         data.setEmail(rs.getString(i));
-                        data.setApproved(true);
                         data.setLocked(false);
                         data.setDeleted(false);
                         readUserGroups(con, data);
@@ -172,7 +141,7 @@ public class UserBean extends DbBean {
         return data;
     }
 
-    private static String API_LOGIN_SQL = "SELECT pwd,id,change_date,first_name,last_name,email,token,token_expiration,now() FROM t_user WHERE login=? AND approved=TRUE AND locked=FALSE AND deleted=FALSE";
+    private static String API_LOGIN_SQL = "SELECT pwd,id,change_date,first_name,last_name,email,token,token_expiration,now() FROM t_user WHERE login=? AND locked=FALSE AND deleted=FALSE";
 
     private static String SET_TOKEN_SQL = "UPDATE t_user SET token=?,token_expiration=? WHERE id=?";
 
@@ -205,7 +174,6 @@ public class UserBean extends DbBean {
                             data.setToken(token);
                             data.setTokenExpiration(expiration.toLocalDateTime());
                         }
-                        data.setApproved(true);
                         data.setLocked(false);
                         data.setDeleted(false);
                         readUserGroups(con, data);
@@ -283,7 +251,6 @@ public class UserBean extends DbBean {
                     data.setFirstName(rs.getString(i++));
                     data.setLastName(rs.getString(i++));
                     data.setEmail(rs.getString(i));
-                    data.setApproved(true);
                     data.setLocked(false);
                     data.setDeleted(false);
                     readUserGroups(con, data);
@@ -300,39 +267,6 @@ public class UserBean extends DbBean {
     }
 
     private static String GET_LOGIN_SQL = "SELECT id,change_date,pwd,first_name,last_name,email FROM t_user WHERE login=? AND approval_code=?";
-
-    public UserData getLogin(String login, String approvalCode, String pwd) {
-        Connection con = getConnection();
-        PreparedStatement pst = null;
-        UserData data = null;
-        boolean passed = false;
-        try {
-            pst = con.prepareStatement(GET_LOGIN_SQL);
-            pst.setString(1, login);
-            pst.setString(2, approvalCode);
-            try (ResultSet rs = pst.executeQuery()) {
-                if (rs.next()) {
-                    int i = 1;
-                    data = new UserData();
-                    data.setId(rs.getInt(i++));
-                    data.setChangeDate(rs.getTimestamp(i++).toLocalDateTime());
-                    data.setLogin(login);
-                    String encrypted = rs.getString(i++);
-                    passed = (UserSecurity.encryptPassword(pwd, Configuration.getSalt()).equals(encrypted));
-                    data.setPassword("");
-                    data.setFirstName(rs.getString(i++));
-                    data.setLastName(rs.getString(i++));
-                    data.setEmail(rs.getString(i));
-                }
-            }
-        } catch (SQLException se) {
-            Log.error("sql error", se);
-        } finally {
-            closeStatement(pst);
-            closeConnection(con);
-        }
-        return passed ? data : null;
-    }
 
     private static String GET_PASSWORD_SQL = "SELECT pwd FROM t_user WHERE id=?";
 
@@ -404,7 +338,7 @@ public class UserBean extends DbBean {
         return exists;
     }
 
-    private static String GET_USER_SQL = "SELECT id,change_date,company_id,title,first_name,last_name,street,zipCode,city,country,email,phone,mobile,notes,portrait,login,approval_code,approved,email_verified,locked,deleted FROM t_user WHERE id=?";
+    private static String GET_USER_SQL = "SELECT id,change_date,title,first_name,last_name,street,zipCode,city,country,email,phone,mobile,notes,portrait,login,locked,deleted FROM t_user WHERE id=?";
 
     public UserData getUser(int id) {
         Connection con = getConnection();
@@ -419,7 +353,6 @@ public class UserBean extends DbBean {
                 int i = 1;
                 data.setId(rs.getInt(i++));
                 data.setChangeDate(rs.getTimestamp(i++).toLocalDateTime());
-                data.setCompanyId(rs.getInt(i++));
                 data.setTitle(rs.getString(i++));
                 data.setFirstName(rs.getString(i++));
                 data.setLastName(rs.getString(i++));
@@ -435,9 +368,6 @@ public class UserBean extends DbBean {
                 data.setHasPortrait(data.getPortrait()!=null);
                 data.setLogin(rs.getString(i++));
                 data.setPassword("");
-                data.setApprovalCode(rs.getString(i++));
-                data.setApproved(rs.getBoolean(i++));
-                data.setEmailVerified(rs.getBoolean(i++));
                 data.setLocked(rs.getBoolean(i++));
                 data.setDeleted(rs.getBoolean(i));
                 readUserGroups(con, data);
@@ -511,9 +441,9 @@ public class UserBean extends DbBean {
         }
     }
 
-    private static String INSERT_USER_SQL = "insert into t_user (change_date,company_id,title,first_name,last_name,street,zipCode,city,country,email,phone,fax,mobile,notes,portrait,login,pwd,approval_code,approved,email_verified,locked,deleted,id) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-    private static String UPDATE_USER_PWD_SQL = "update t_user set change_date=?,company_id=?,title=?,first_name=?,last_name=?,street=?,zipCode=?,city=?,country=?,email=?,phone=?,fax=?,mobile=?,notes=?,portrait=?,login=?,pwd=?,approval_code=?,approved=?,email_verified=?,locked=?,deleted=? where id=?";
-    private static String UPDATE_USER_NOPWD_SQL = "update t_user set change_date=?,company_id=?,title=?,first_name=?,last_name=?,street=?,zipCode=?,city=?,country=?,email=?,phone=?,fax=?,mobile=?,notes=?,portrait=?,login=?,approval_code=?,approved=?,email_verified=?,locked=?,deleted=? where id=?";
+    private static String INSERT_USER_SQL = "insert into t_user (change_date,title,first_name,last_name,street,zipCode,city,country,email,phone,fax,mobile,notes,portrait,login,pwd,locked,deleted,id) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    private static String UPDATE_USER_PWD_SQL = "update t_user set change_date=?,title=?,first_name=?,last_name=?,street=?,zipCode=?,city=?,country=?,email=?,phone=?,fax=?,mobile=?,notes=?,portrait=?,login=?,pwd=?,locked=?,deleted=? where id=?";
+    private static String UPDATE_USER_NOPWD_SQL = "update t_user set change_date=?,title=?,first_name=?,last_name=?,street=?,zipCode=?,city=?,country=?,email=?,phone=?,fax=?,mobile=?,notes=?,portrait=?,login=?,locked=?,deleted=? where id=?";
 
     protected void writeUser(Connection con, UserData data) throws SQLException {
         PreparedStatement pst = null;
@@ -521,10 +451,6 @@ public class UserBean extends DbBean {
             pst = con.prepareStatement(data.isNew() ? INSERT_USER_SQL : data.hasPassword() ? UPDATE_USER_PWD_SQL : UPDATE_USER_NOPWD_SQL);
             int i = 1;
             pst.setTimestamp(i++, Timestamp.valueOf(data.getChangeDate()));
-            if (data.getCompanyId()==0)
-                pst.setNull(i++,Types.INTEGER);
-            else
-                pst.setInt(i++,data.getCompanyId());
             pst.setString(i++, data.getTitle());
             pst.setString(i++, data.getFirstName());
             pst.setString(i++, data.getLastName());
@@ -545,9 +471,6 @@ public class UserBean extends DbBean {
             if (data.hasPassword()) {
                 pst.setString(i++, data.getPasswordHash());
             }
-            pst.setString(i++, data.getApprovalCode());
-            pst.setBoolean(i++, data.isApproved());
-            pst.setBoolean(i++, data.isEmailVerified());
             pst.setBoolean(i++, data.isLocked());
             pst.setBoolean(i++, data.isDeleted());
             pst.setInt(i, data.getId());
@@ -573,7 +496,7 @@ public class UserBean extends DbBean {
         }
     }
 
-    private static String UPDATE_PROFILE_SQL = "UPDATE t_user SET change_date=?,company_id=?,title=?,first_name=?,last_name=?,street=?,zipCode=?,city=?,country=?,email=?,phone=?,fax=?,mobile=?,notes=?,portrait=? WHERE id=?";
+    private static String UPDATE_PROFILE_SQL = "UPDATE t_user SET change_date=?,title=?,first_name=?,last_name=?,street=?,zipCode=?,city=?,country=?,email=?,phone=?,fax=?,mobile=?,notes=?,portrait=? WHERE id=?";
 
     protected void writeUserProfile(Connection con, UserData data) throws SQLException {
         PreparedStatement pst = null;
@@ -581,10 +504,6 @@ public class UserBean extends DbBean {
             pst = con.prepareStatement(UPDATE_PROFILE_SQL);
             int i = 1;
             pst.setTimestamp(i++, Timestamp.valueOf(data.getChangeDate()));
-            if (data.getCompanyId()==0)
-                pst.setNull(i++,Types.INTEGER);
-            else
-                pst.setInt(i++,data.getCompanyId());
             pst.setString(i++, data.getTitle());
             pst.setString(i++, data.getFirstName());
             pst.setString(i++, data.getLastName());
@@ -627,36 +546,6 @@ public class UserBean extends DbBean {
         } finally {
             closeStatement(pst);
             closeConnection(con);
-        }
-    }
-
-    public boolean saveUserVerifyEmail(UserData data) {
-        Connection con = startTransaction();
-        try {
-            if (changedLogin(con, data)) {
-                return rollbackTransaction(con);
-            }
-            data.setChangeDate(getServerTime(con));
-            writeUserVerfiyEmail(con, data);
-            return commitTransaction(con);
-        } catch (Exception se) {
-            return rollbackTransaction(con, se);
-        }
-    }
-
-    private static String VERIFY_EMAIL_SQL = "UPDATE t_user SET change_date=?, email_verified=true WHERE id=?";
-
-    protected void writeUserVerfiyEmail(Connection con, UserData data) throws SQLException {
-        PreparedStatement pst = null;
-        try {
-            pst = con.prepareStatement(VERIFY_EMAIL_SQL);
-            int i = 1;
-            pst.setTimestamp(i++, Timestamp.valueOf(data.getChangeDate()));
-            pst.setInt(i, data.getId());
-            pst.executeUpdate();
-            pst.close();
-        } finally {
-            closeStatement(pst);
         }
     }
 

@@ -45,9 +45,6 @@ public class UserData extends BaseData {
     protected String passwordHash = "";
     protected String token = "";
     protected LocalDateTime tokenExpiration = null;
-    protected String approvalCode = "";
-    protected boolean approved = false;
-    protected boolean emailVerified = false;
     protected boolean locked = false;
     protected boolean deleted = false;
     protected String street = "";
@@ -60,7 +57,6 @@ public class UserData extends BaseData {
     protected String notes = "";
     protected boolean hasPortrait=false;
     protected byte[] portrait = null;
-    protected int companyId = 0;
 
     protected Set<Integer> groupIds = new HashSet<>();
 
@@ -149,30 +145,6 @@ public class UserData extends BaseData {
 
     public void setTokenExpiration(LocalDateTime tokenExpiration) {
         this.tokenExpiration = tokenExpiration;
-    }
-
-    public String getApprovalCode() {
-        return approvalCode;
-    }
-
-    public void setApprovalCode(String approvalCode) {
-        this.approvalCode = approvalCode;
-    }
-
-    public boolean isApproved() {
-        return approved;
-    }
-
-    public void setApproved(boolean approved) {
-        this.approved = approved;
-    }
-
-    public boolean isEmailVerified() {
-        return emailVerified;
-    }
-
-    public void setEmailVerified(boolean emailVerified) {
-        this.emailVerified = emailVerified;
     }
 
     public boolean isLocked() {
@@ -273,14 +245,6 @@ public class UserData extends BaseData {
         this.portrait = portrait;
     }
 
-    public int getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(int companyId) {
-        this.companyId = companyId;
-    }
-
     public void clearSystemRights(){
         systemRights.clear();
     }
@@ -330,7 +294,6 @@ public class UserData extends BaseData {
     // multiple data
 
     private void readBasicData(SessionRequestData rdata) {
-        setCompanyId(rdata.getInt("companyId"));
         setTitle(rdata.getString("title"));
         setFirstName(rdata.getString("firstName"));
         setLastName(rdata.getString("lastName"));
@@ -371,8 +334,6 @@ public class UserData extends BaseData {
         readBasicData(rdata);
         setLogin(rdata.getString("login"));
         setPassword(rdata.getString("password"));
-        setApproved(rdata.getBoolean("approved"));
-        setEmailVerified(rdata.getBoolean("emailVerified"));
         setGroupIds(rdata.getIntegerSet("groupIds"));
         if (login.isEmpty())
             rdata.addIncompleteField("login");
