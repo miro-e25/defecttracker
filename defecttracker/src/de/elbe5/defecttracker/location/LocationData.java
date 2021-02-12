@@ -122,6 +122,10 @@ public class LocationData extends ContentData {
         return rdata.hasSystemRight(SystemZone.CONTENTEDIT);
     }
 
+    public boolean hasUserAnyEditRight(SessionRequestData rdata) {
+        return rdata.hasSystemRight(SystemZone.CONTENTEDIT) || rdata.hasSystemRight(SystemZone.SPECIFICCONTENTEDIT);
+    }
+
     @Override
     public List<String> getImageClasses(){
         return imageTypes;

@@ -32,7 +32,7 @@
     </h1>
 </section>
 <section class="contentSection tableContent" id="content">
-    <% if (location.hasUserEditRight(rdata)){%>
+    <% if (location.hasUserAnyEditRight(rdata)){%>
     <div class = contentTop>
         <a class="btn btn-outline-primary" href="/ctrl/defect/openCreateContentFrontend?parentId=<%=location.getId()%>"><%=$SH("_createDefect",locale)%>
         </a>

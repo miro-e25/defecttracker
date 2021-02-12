@@ -52,7 +52,7 @@ public class DefectController extends DefectBaseController {
     public IView openCreateContentFrontend(SessionRequestData rdata) {
         int parentId=rdata.getInt("parentId");
         LocationData parent= (LocationData) ContentCache.getContent(parentId);
-        checkRights(parent.hasUserEditRight(rdata));
+        checkRights(parent.hasUserAnyEditRight(rdata));
         DefectData data = new DefectData();
         data.setCreateValues(parent, rdata);
         data.setViewType(ContentData.VIEW_TYPE_EDIT);
@@ -64,7 +64,7 @@ public class DefectController extends DefectBaseController {
     public IView openEditContentFrontend(SessionRequestData rdata) {
         int defectId=rdata.getId();
         DefectData data = ContentBean.getInstance().getContent(defectId,DefectData.class);
-        checkRights(data.hasUserEditRight(rdata));
+        checkRights(data.hasUserAnyEditRight(rdata));
         rdata.setCurrentSessionContent(data);
         data.setViewType(ContentData.VIEW_TYPE_EDIT);
         return new ContentView(data);
@@ -76,7 +76,7 @@ public class DefectController extends DefectBaseController {
         int contentId=rdata.getId();
         DefectData data=rdata.getCurrentSessionContent(DefectData.class);
         assert(data != null && data.getId() == contentId);
-        checkRights(data.hasUserEditRight(rdata));
+        checkRights(data.hasUserAnyEditRight(rdata));
         if (data.isNew())
             data.readFrontendCreateRequestData(rdata);
         else
@@ -99,7 +99,7 @@ public class DefectController extends DefectBaseController {
     public IView closeDefect(SessionRequestData rdata) {
         int contentId=rdata.getId();
         DefectData data = ContentBean.getInstance().getContent(contentId,DefectData.class);
-        checkRights(data.hasUserEditRight(rdata));
+        checkRights(data.hasUserAnyEditRight(rdata));
         data.setCloseDate(DefectBean.getInstance().getServerTime().toLocalDate());
         data.setChangerId(rdata.getUserId());
         if (!DefectBean.getInstance().closeDefect(data)) {

@@ -282,6 +282,10 @@ public class DefectData extends ContentData {
         return rdata.hasSystemRight(SystemZone.CONTENTEDIT);
     }
 
+    public boolean hasUserAnyEditRight(SessionRequestData rdata) {
+        return rdata.hasSystemRight(SystemZone.CONTENTEDIT) || rdata.hasSystemRight(SystemZone.SPECIFICCONTENTEDIT);
+    }
+
     // view
 
     @Override

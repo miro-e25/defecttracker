@@ -220,11 +220,6 @@ public class ContentData extends BaseData implements Comparable<ContentData> {
         return (user!=null && (user.hasSystemRight(SystemZone.CONTENTEDIT) || hasUserRight(user,Right.EDIT)));
     }
 
-    public boolean hasUserApproveRight(SessionRequestData rdata) {
-        UserData user=rdata.getLoginUser();
-        return (user!=null && (user.hasSystemRight(SystemZone.CONTENTAPPROVE) || hasUserRight(user,Right.APPROVE)));
-    }
-
     // tree data
 
     public int getParentId() {

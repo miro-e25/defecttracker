@@ -31,7 +31,7 @@
     assert(project!=null);
     GroupData group= GroupBean.getInstance().getGroup(project.getGroupId());
     String url = "/ctrl/defect/saveContentFrontend/" + defect.getId();
-    if (defect.hasUserEditRight(rdata)){
+    if (defect.hasUserAnyEditRight(rdata)){
 %>
 <form:message/>
 <section class="contentTop">
