@@ -21,9 +21,12 @@
     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="" role="button" aria-haspopup="true" aria-expanded="false"><%=$SH("_locations",locale)%>
     </a>
     <div class="dropdown-menu">
-        <% for (ContentData child : project.getChildren()){%>
+        <% for (ContentData child : project.getChildren()){
+            if (child.isActive()){
+        %>
         <a class="dropdown-item" href="<%=child.getUrl()%>"><%=$H(child.getDisplayName())%></a>
-        <%}%>
+        <%}
+        }%>
     </div>
 </li>
 <%

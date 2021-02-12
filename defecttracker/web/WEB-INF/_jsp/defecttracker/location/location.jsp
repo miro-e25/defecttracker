@@ -14,7 +14,6 @@
 <%@ page import="de.elbe5.defecttracker.location.LocationData" %>
 <%@ page import="java.util.List" %>
 <%@ page import="de.elbe5.defecttracker.defect.DefectData" %>
-<%@ page import="de.elbe5.file.FileData" %>
 <%@ page import="de.elbe5.defecttracker.ViewFilter" %>
 <%@ taglib uri="/WEB-INF/formtags.tld" prefix="form" %>
 <%
@@ -33,10 +32,12 @@
     </h1>
 </section>
 <section class="contentSection tableContent" id="content">
-    <div>
-        <a class="link" href="/ctrl/defect/openCreateContentFrontend?parentId=<%=location.getId()%>"><%=$SH("_createDefect",locale)%>
+    <% if (location.hasUserEditRight(rdata)){%>
+    <div class = contentTop>
+        <a class="btn btn-outline-primary" href="/ctrl/defect/openCreateContentFrontend?parentId=<%=location.getId()%>"><%=$SH("_createDefect",locale)%>
         </a>
     </div>
+    <%}%>
     <div id="defectTable" class="flexTable defect-table">
         <div class="tableHead">
             <div class="tableRow">

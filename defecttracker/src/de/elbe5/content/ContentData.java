@@ -209,10 +209,10 @@ public class ContentData extends BaseData implements Comparable<ContentData> {
     }
 
     public boolean hasUserReadRight(SessionRequestData rdata) {
-        if (isOpenAccess() && isPublished())
+        if (isOpenAccess())
             return true;
         UserData user=rdata.getLoginUser();
-        return user!=null && (user.hasSystemRight(SystemZone.CONTENTREAD) || (hasUserRight(user,Right.READ) && isPublished()) || hasUserEditRight(rdata));
+        return user!=null && (user.hasSystemRight(SystemZone.CONTENTREAD) || (hasUserRight(user,Right.READ)) || hasUserEditRight(rdata));
     }
 
     public boolean hasUserEditRight(SessionRequestData rdata) {
@@ -372,22 +372,7 @@ public class ContentData extends BaseData implements Comparable<ContentData> {
         files.add(data);
     }
 
-    // defaults for overriding
-
-    public String getKeywords(){
-        return "";
-    }
-
-    public boolean isPublished() {
-        return true;
-    }
-
-    public boolean hasUnpublishedDraft() {
-        return false;
-    }
-
     // view
-
 
     public String getViewType() {
         return viewType;

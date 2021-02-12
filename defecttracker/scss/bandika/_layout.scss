@@ -199,6 +199,10 @@ main {
   background: transparent;
 }
 
+.contentTop{
+  margin-bottom: 0.5rem;
+}
+
 div#pageContainer {
   position: relative;
   height: 100%;
@@ -450,6 +454,10 @@ div.boxContainer{
       padding: 0 1em 1em 1em;
     }
   }
+}
+
+span.inactive{
+  color: #6c757d;
 }
 
 

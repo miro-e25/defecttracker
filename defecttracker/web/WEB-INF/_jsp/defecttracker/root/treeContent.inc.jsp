@@ -20,7 +20,7 @@
     assert contentData != null;
 %>
 <li class="open">
-    <span class="<%=contentData.hasUnpublishedDraft() ? "unpublished" : "published"%>">
+    <span class="<%=contentData.isActive() ? "" : "inactive"%>">
         <%=$H(contentData.getDisplayName())%>
     </span>
     <%if (contentData.hasUserEditRight(rdata)) {%>
