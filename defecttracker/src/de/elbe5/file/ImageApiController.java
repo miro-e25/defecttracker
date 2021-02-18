@@ -47,6 +47,7 @@ public class ImageApiController extends FileApiController {
     }
 
     public IApiView download(ApiRequestData rdata) {
+        //Log.info("downloading file");
         UserData user = rdata.getLoginUser();
         if (user==null)
             return new ApiResponseCodeView((ResponseCode.UNAUTHORIZED));
@@ -56,7 +57,10 @@ public class ImageApiController extends FileApiController {
         ImageData data;
         int id = rdata.getId();
         data = ImageBean.getInstance().getFile(id, true, ImageData.class);
-        assert(data!=null);
+        if (data==null){
+            Log.error("could not load image with id " + id);
+            return new ApiResponseCodeView((ResponseCode.NOT_FOUND));
+        }
         ContentData parent=ContentCache.getContent(data.getParentId());
         if (!user.hasSystemRight(SystemZone.CONTENTREAD) && !parent.hasUserRight(user, Right.READ)) {
             return new ApiResponseCodeView((ResponseCode.UNAUTHORIZED));
@@ -67,7 +71,7 @@ public class ImageApiController extends FileApiController {
         catch (IOException e){
             return new ApiResponseCodeView(ResponseCode.INTERNAL_SERVER_ERROR);
         }
-        Log.info("image size = "+data.getWidth()+","+data.getHeight());
+        //Log.info("image size = "+data.getWidth()+","+data.getHeight());
         BinaryFile file=new BinaryFile();
         file.setFileName(data.getFileName());
         file.setBytes(data.getBytes());
@@ -77,9 +81,13 @@ public class ImageApiController extends FileApiController {
     }
 
     public IApiView showPreview(ApiRequestData rdata) {
+        //Log.info("downloading preview");
         int imageId = rdata.getId();
         ImageData data = ContentCache.getFile(imageId,ImageData.class);
-        assert(data!=null);
+        if (data==null){
+            Log.error("could not load preview with id " + rdata.getId());
+            return new ApiResponseCodeView((ResponseCode.NOT_FOUND));
+        }
         return new ApiImagePreview(data);
     }
 

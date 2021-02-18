@@ -74,13 +74,19 @@ public class ProjectApiController extends BaseApiController {
         filter.setCurrentUserId(user.getId());
         filter.setShowClosed(false);
         List<Integer> projectIds= ProjectBean.getInstance().getUserProjectIds(user.getId(),isEditor);
+        Log.log("found projectIds: " + projectIds.size());
         Locale locale= Configuration.getDefaultLocale();
         JSONObject json = new JSONObject();
         JSONArray jsProjects=new JSONArray();
         json.put("projects",jsProjects);
         for (int projectId : projectIds){
             ProjectData project = ContentCache.getContent(projectId,ProjectData.class);
-            assert(project!=null);
+            //Log.info("project is: " + (project == null ? "null" : project.getName()));
+            assert(project != null);
+            if (!project.isActive()){
+                Log.warn("skipping inactive project: " + project.getName());
+                continue;
+            }
             JSONObject jsProject = project.getJson(locale);
             GroupData group = GroupBean.getInstance().getGroup(project.getGroupId());
             JSONArray jsUsers=new JSONArray();
@@ -90,38 +96,49 @@ public class ProjectApiController extends BaseApiController {
                 jsUsers.add(jsUser);
             }
             jsProject.put("users",jsUsers);
+            //Log.info("found project users: " + jsUsers.size());
             jsProjects.add(jsProject);
             JSONArray jsLocations=new JSONArray();
             jsProject.put("locations", jsLocations);
-            for (LocationData location : project.getChildren(LocationData.class)){
+            for (LocationData location : project.getChildren(LocationData.class)) {
+                //Log.info("location is: " + (location == null ? "null" : location.getName()));
+                if (!location.isActive()){
+                    Log.warn("skipping inactive location: " + location.getName());
+                    continue;
+                }
                 JSONObject jsLocation = location.getJson(locale);
                 jsLocations.add(jsLocation);
-                PlanImageData plan=location.getPlan();
-                if (plan!=null){
+                PlanImageData plan = location.getPlan();
+                if (plan != null) {
                     JSONObject jsPlan = plan.getJson(locale);
                     jsLocation.put("plan", jsPlan);
                 }
-                JSONArray jsDefects=new JSONArray();
+                JSONArray jsDefects = new JSONArray();
                 jsLocation.put("defects", jsDefects);
-                for (DefectData defect : location.getChildren(DefectData.class)){
+                for (DefectData defect : location.getChildren(DefectData.class)) {
+                    //Log.info("defect is: " + (defect == null ? "null" : defect.getName()));
+                    if (!defect.isActive()){
+                        Log.warn("skipping inactive defect: " + defect.getDisplayId());
+                        continue;
+                    }
                     JSONObject jsDefect = defect.getJson();
                     jsDefects.add(jsDefect);
-                    JSONArray jsImages=new JSONArray();
+                    JSONArray jsImages = new JSONArray();
                     jsDefect.put("images", jsImages);
-                    for (DefectImageData image : defect.getFiles(DefectImageData.class)){
+                    for (DefectImageData image : defect.getFiles(DefectImageData.class)) {
                         JSONObject jsImage = image.getJson(locale);
                         jsImages.add(jsImage);
                     }
                     List<DefectCommentImageData> commentImages = defect.getFiles(DefectCommentImageData.class);
-                    JSONArray jsComments=new JSONArray();
+                    JSONArray jsComments = new JSONArray();
                     jsDefect.put("comments", jsComments);
-                    for (DefectCommentData comment : defect.getComments()){
+                    for (DefectCommentData comment : defect.getComments()) {
                         JSONObject jsComment = comment.getJson();
                         jsComments.add(jsComment);
-                        JSONArray jsCommentImages=new JSONArray();
+                        JSONArray jsCommentImages = new JSONArray();
                         jsComment.put("images", jsCommentImages);
-                        for (DefectCommentImageData image : commentImages){
-                            if (image.getCommentId()==comment.getId()) {
+                        for (DefectCommentImageData image : commentImages) {
+                            if (image.getCommentId() == comment.getId()) {
                                 JSONObject jsImage = image.getJson(locale);
                                 jsCommentImages.add(jsImage);
                             }

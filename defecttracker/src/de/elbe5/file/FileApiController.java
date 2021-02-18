@@ -8,6 +8,7 @@
  */
 package de.elbe5.file;
 
+import de.elbe5.base.log.Log;
 import de.elbe5.content.ContentCache;
 import de.elbe5.content.ContentData;
 import de.elbe5.request.ApiRequestData;
@@ -21,12 +22,17 @@ import de.elbe5.view.*;
 public abstract class FileApiController extends ApiController {
 
     public IApiView download(ApiRequestData rdata) {
+        //Log.info("loading file");
         UserData user = rdata.getLoginUser();
         if (user==null)
             return new ApiResponseCodeView((ResponseCode.UNAUTHORIZED));
         FileData data;
         int id = rdata.getId();
         data = ContentCache.getFile(id);
+        if (data==null){
+            Log.error("could not load file with id " + id);
+            return new ApiResponseCodeView((ResponseCode.NOT_FOUND));
+        }
         ContentData parent=ContentCache.getContent(data.getParentId());
         if (!user.hasSystemRight(SystemZone.CONTENTREAD) && !parent.hasUserRight(user, Right.READ)) {
             return new ApiResponseCodeView((ResponseCode.UNAUTHORIZED));

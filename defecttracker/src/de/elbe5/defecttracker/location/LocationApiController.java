@@ -57,6 +57,7 @@ public class LocationApiController extends BaseApiController {
         UserData user = rdata.getLoginUser();
         if (user==null)
             return new ApiResponseCodeView(ResponseCode.UNAUTHORIZED);
+        Log.info("loading location defect plan");
         int scalePercent = rdata.getInt("scale", 100);
         boolean isEditor = user.hasSystemRight(SystemZone.CONTENTEDIT);
         int id = rdata.getId();
@@ -65,7 +66,8 @@ public class LocationApiController extends BaseApiController {
         filter.setEditor(isEditor);
         filter.setCurrentUserId(user.getId());
         if (!data.hasUserReadRight(filter)) {
-            return new ApiResponseCodeView(ResponseCode.UNAUTHORIZED);
+            Log.error("plan is null");
+            return new ApiResponseCodeView(ResponseCode.NOT_FOUND);
         }
         if (data.getPlan()==null)
             return new ApiResponseCodeView(ResponseCode.NOT_FOUND);
@@ -73,7 +75,10 @@ public class LocationApiController extends BaseApiController {
         byte[] redarrowBytes = LocationBean.getInstance().getImageBytes("redarrow.png");
         List<DefectData> defects = filter.getLocationDefects(data.getId());
         BinaryFile file = plan.createLocationDefectPlan(redarrowBytes,defects,((float)scalePercent)/100);
-        assert(file!=null);
+        if (file==null) {
+            Log.error("file is null");
+            return new ApiResponseCodeView(ResponseCode.NOT_FOUND);
+        }
         return new ApiBinaryFileView(file);
     }
 
