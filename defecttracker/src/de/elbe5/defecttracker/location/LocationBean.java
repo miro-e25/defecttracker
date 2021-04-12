@@ -75,4 +75,13 @@ public class LocationBean extends ContentBean {
             ImageBean.getInstance().saveFile(con,data.getPlan(),true);
     }
 
+    @Override
+    public void updateContentExtras(Connection con, ContentData contentData) throws SQLException{
+        if (contentData.isNew() || !(contentData instanceof LocationData))
+            return;
+        LocationData data = (LocationData) contentData;
+        if (data.getPlan()!=null)
+            ImageBean.getInstance().saveFile(con,data.getPlan(),true);
+    }
+
 }

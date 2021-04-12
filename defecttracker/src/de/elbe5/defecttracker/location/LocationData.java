@@ -169,6 +169,13 @@ public class LocationData extends ContentData {
         setName(StringUtil.toSafeWebName(getDisplayName()));
         setDescription(rdata.getString("description"));
         setNavType(ContentData.NAV_TYPE_HEADER);
+        BinaryFile file = rdata.getFile("file");
+        if (file != null && plan == null){
+            plan = new PlanImageData();
+            plan.setCreateValues(this,rdata);
+            plan.createFromBinaryFile(file, PlanImageData.STD_SIZE, PlanImageData.STD_SIZE, plan.getMaxPreviewWidth(), plan.getMaxPreviewHeight(), false);
+            plan.setDisplayName(Strings.string("_plan",rdata.getSessionLocale()));
+        }
         setActive(rdata.getBoolean("active"));
         if (getDisplayName().isEmpty()) {
             rdata.addIncompleteField("displayName");

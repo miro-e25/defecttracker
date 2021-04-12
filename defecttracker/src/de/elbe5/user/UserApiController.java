@@ -52,8 +52,7 @@ public class UserApiController extends ApiController {
             return new ApiResponseCodeView(ResponseCode.UNAUTHORIZED);
         }
 
-        String duration=rdata.getString("duration");
-        LocalDateTime expiration = getExpiration(duration);
+        LocalDateTime expiration = getExpiration();
         if (data.getToken().isEmpty()){
             if (!UserBean.getInstance().setToken(data, expiration))
                 return new ApiResponseCodeView(ResponseCode.UNAUTHORIZED);
@@ -80,22 +79,8 @@ public class UserApiController extends ApiController {
         return new ApiResponseCodeView(ResponseCode.OK);
     }
 
-    private LocalDateTime getExpiration(String duration){
-        LocalDateTime now = UserBean.getInstance().getServerTime();
-        switch (duration){
-            case "hour":
-                return now.plusHours(1);
-            case "day":
-                return now.plusDays(1);
-            case "week":
-                return now.plusWeeks(1);
-            case "month":
-                return now.plusMonths(1);
-            case "year":
-                return now.plusYears(1);
-            default:
-                return LocalDateTime.of(now.getYear(),now.getMonth(),now.getDayOfMonth(),0,0).plusDays(1);
-        }
+    private LocalDateTime getExpiration(){
+        return LocalDateTime.of(2050, 01, 01, 0, 0 );
     }
 
 }

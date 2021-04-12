@@ -74,7 +74,7 @@ public class ProjectApiController extends BaseApiController {
         filter.setCurrentUserId(user.getId());
         filter.setShowClosed(false);
         List<Integer> projectIds= ProjectBean.getInstance().getUserProjectIds(user.getId(),isEditor);
-        Log.log("found projectIds: " + projectIds.size());
+        //Log.log("found projectIds: " + projectIds.size());
         Locale locale= Configuration.getDefaultLocale();
         JSONObject json = new JSONObject();
         JSONArray jsProjects=new JSONArray();

@@ -44,7 +44,7 @@
 
                 <form:text name="displayName" label="_name" required="true" value="<%=$H(contentData.getDisplayName())%>"/>
                 <form:textarea name="description" label="_description" height="5em"><%=$H(contentData.getDescription())%></form:textarea>
-                <% if (contentData.isNew()){%>
+                <% if (contentData.getPlan() == null){%>
                 <form:file name="file" label="_plan" />
                 <form:line><%=$SH("_uploadHint", locale)%></form:line>
                 <%}%>
